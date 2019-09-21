@@ -13,11 +13,17 @@
 <button id="startButton" onclick="showForm()">Get Started</button>
 
 <!-- registration form -->
-<form action="" method="post" id="registrationForm" style="display: none">
-    <input type="email" name="email" value="">
+<form action="personalize.php" method="post" id="registrationForm" style="display: none">
+
+    <input type="email" name="email" value="Email">
     <br>
-    <input type="password" name="password" value="">
+
+    <input type="password" name="password" value="Password">
     <br>
+
+    <input type="text" name="username" value="Username">
+    <br>
+
     <input type="submit" name="sumbit" value="submit">
 </form>
 
@@ -26,7 +32,6 @@
     function showForm() {
         let registrationForm = document.getElementById("registrationForm");
         let loginButton = document.getElementById("loginButton");
-
         if (registrationForm.style.display === "none") {
             registrationForm.style.display = "block";
             loginButton.style.display = "none";
