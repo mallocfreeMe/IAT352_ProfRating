@@ -2,7 +2,8 @@
 <body>
 
 <?php
-$theOneIndex = $_GET['id'];
+@$theOneIndex = $_GET['id'];
+
 if (is_numeric($theOneIndex)) {
     $test = fopen("assets/ratemyprofessors.csv", "r");
 
@@ -20,7 +21,8 @@ if (is_numeric($theOneIndex)) {
 
     fclose($test);
 } else {
-    echo "something is wrong";
+    header("Location: explore.php");
+    die();
 }
 ?>
 
