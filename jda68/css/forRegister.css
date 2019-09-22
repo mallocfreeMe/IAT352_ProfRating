@@ -14,7 +14,13 @@
 }
 
 .firstPage {
-    background-color: lightblue;
+    /* School vector created by freepik - www.freepik.com */
+    background-image: url("../assets/images/1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-blend-mode: darken;
+    background-color: #e6e6e6;
     width: 100%;
     height: 100%;
 }
@@ -66,17 +72,26 @@ footer a {
 }
 
 .secondPage {
+    /* Photo by Patrick Tomasso on Unsplash */
+    background-image: url("../assets/images/2.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
     background-color: #1be958;
+    background-attachment: fixed;
     font-size: 2rem;
     width: 100%;
     height: 100%;
 }
 
 .thirdPage {
+    /*Photo by Cole Keister on Unsplash*/
+    background-image: url("../assets/images/3.png");
+    background-repeat: no-repeat;
+    background-size: cover;
     background-color: #e6733a;
     font-size: 2rem;
     width: 100%;
-    height: 100%;
+    height: 120%;
 }
 
 a {

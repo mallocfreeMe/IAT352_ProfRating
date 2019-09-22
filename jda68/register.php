@@ -17,6 +17,12 @@
     <div class="firstPage">
 
         <div class="topPart">
+
+            <!-- icon -->
+            <figure>
+                <img src="assets/images/logo.png">
+            </figure>
+
             <!-- register button for new users -->
             <br>
             <button id="startButton" onclick="showForm()">Get Started</button>
