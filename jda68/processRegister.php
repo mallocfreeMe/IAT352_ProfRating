@@ -6,7 +6,7 @@
 @$password = $_POST["password"];
 @$username = $_POST["username"];
 
-if (!empty($email) || !empty($password) || !empty($username)) {
+if (!empty($email) && !empty($password) && !empty($username)) {
 
     $file = "private/user.txt";
     $handler = fopen($file, "a+");
@@ -20,7 +20,8 @@ if (!empty($email) || !empty($password) || !empty($username)) {
         fwrite($handler, $info);
         fclose($handler);
 
-        header("Location: private/personalize.php");
+        $string = "Location: private/personalize.php?name=" . $username;
+        header($string);
         die();
     } else {
         header("Location: register.php");

@@ -4,7 +4,8 @@
 <br>
 
 <?php
-
+$name = $_GET["name"];
+echo "Hello " . $name . "<br>";
 echo "this is personalize page";
 echo "Welcome to ProRating, !!!!";
 echo "<br>";

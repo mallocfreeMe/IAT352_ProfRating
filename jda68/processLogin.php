@@ -11,28 +11,20 @@ if (!empty($email) || !empty($password)) {
     $handler = fopen($file, "r");
 
     if ($handler) {
-        while ($line = fgets($handler) !== false) {
-            foreach ($line as $cell) {
-                $array = array(
-                    "email" => "",
-                    "password" => "",
-                    "username" => ""
-                );
-
-                $rightEmail = $array["email"];
-                $rightPassword = $array["password"];
-            }
-
+        while (!feof($handler)) {
+            $array = explode(',', fgets($handler));
             // find the right match
-            if ($array["email"] == $email && $array["password"] == $password) {
-                break;
+            if ($array["0"] == $email && $array["1"] == $password) {
+                fclose($handler);
+
+                // pass name to personalize page through url
+                $string = "Location: private/personalize.php?name=" . $array[2];
+                header($string);
+                die();
             }
         }
-
+        // did not find the right match, go back to log in page
         fclose($handler);
-        header("Location: private/personalize.php");
-        die();
-    } else {
         header("Location: login.php");
         die();
     }
