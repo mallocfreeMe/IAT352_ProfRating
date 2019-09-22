@@ -26,5 +26,8 @@ if (is_numeric($theOneIndex)) {
 }
 ?>
 
+<textarea rows="4" cols="50" name="comment" form="usrform">
+Enter text here...</textarea>
+
 </body>
 </html>
