@@ -5,7 +5,7 @@
 @$theOneIndex = $_GET['id'];
 
 if (is_numeric($theOneIndex)) {
-    $test = fopen("assets/ratemyprofessors.csv", "r");
+    $test = fopen("assets/data/ratemyprofessors.csv", "r");
 
     $testIndex = 0;
     while (($line = fgetcsv($test)) !== false) {

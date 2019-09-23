@@ -3,14 +3,64 @@
     margin: 0px;
 }
 
-#searchBar {
+.searchIcon {
+    float: left;
+    margin-left: 150px;
+    position: fixed;
+}
+
+#sideLoginButton {
+    font-size: 20px;
+    background-color: white;
+    color: black;
+    width: 100px;
+    height: 50px;
     margin-top: 20px;
+    margin-right: 100px;
+    float: right;
     margin-left: 300px;
+}
+
+#searchBar {
+    opacity: 0.5;
+    float: left;
+    margin-left: 300px;
+    display: inline-block;
+    background-color: white;
+    /* Icons made by "https://www.flaticon.com/authors/smashicons" */
+    background-image: url("../assets/icons/search.png");
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: 20px;
+    margin-top: 20px;
     font-size: 15px;
     height: 40px;
     user-input: 100px;
     position: fixed;
     top: 0px;
+}
+
+#searchBar::placeholder {
+    color: #c8c8c8;
+}
+
+#searchBar[type="text"] {
+    font-family: Arial, sans-serif;
+    padding-left: 30px;
+}
+
+#searchBar:focus {
+    opacity: 1;
+    background-color: white;
+    /* Icons made by "https://www.flaticon.com/authors/smashicons" */
+    background-image: url("../assets/icons/searchHover.png");
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: 20px;
+}
+
+#searchBar:focus::placeholder {
+    color: #787878;
 }
 
 .firstPage {
@@ -25,13 +75,38 @@
     height: 100%;
 }
 
-.firstPage button {
+.firstPage .topPart {
+    padding-top: 200px;
+    margin-left: 880px;
+}
+
+.firstPage .registerIcon {
+    margin-left: 50px;
+}
+
+.firstPage .registrationForm {
+    padding-top: 100px;
+    width: 200px;
+    height: 200px;
+    padding-bottom: 30px;
+}
+
+.firstPage button, .firstPage input[type=submit] {
     margin: 5px;
     color: white;
     background: #29c5e9;
     font-size: 20px;
     width: 300px;
     height: 50px;
+}
+
+.firstPage #loginButton {
+    background: white;
+    color: black;
+}
+
+.firstPage input[type=submit] {
+    margin-top: 20px;
 }
 
 .firstPage input {
@@ -47,14 +122,10 @@
     box-sizing: border-box;
 }
 
-.firstPage .registrationForm {
-    width: 200px;
-    height: 200px;
-}
-
-.firstPage .topPart {
-    padding-top: 350px;
-    margin-left: 880px;
+.firstPage .topPart .visitorLink {
+    color: white;
+    font-size: 1rem;
+    padding-left: 80px;
 }
 
 footer {

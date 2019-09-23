@@ -4,7 +4,7 @@
 <?php
 // https://stackoverflow.com/questions/518795/dynamically-display-a-csv-file-as-an-html-table-on-a-web-page
 echo "<table>\n\n";
-$f = fopen("assets/ratemyprofessors.csv", "r");
+$f = fopen("assets/data/ratemyprofessors.csv", "r");
 
 $countForFirstLine = 0;
 $index = 0;

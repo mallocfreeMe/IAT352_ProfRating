@@ -7,9 +7,16 @@
 
 <body>
 
+
 <!-- Navigation Menu-->
 <nav class="navigation">
-    <input type="text" placeholder="Search Prof..." size="50" id="searchBar">
+    <figure>
+        <img src="assets/images/logoHead.png" class="searchIcon">
+    </figure>
+
+    <input type="text" placeholder="Search Prof" size="50" id="searchBar">
+
+    <button id="sideLoginButton" style="display: none" onclick="location.href='login.php'">Log in</button>
 </nav>
 
 <!-- First page-->
@@ -20,8 +27,10 @@
 
             <!-- icon -->
             <figure>
-                <img src="assets/images/logo.png">
+                <img src="assets/images/logo.png" class="registerIcon">
             </figure>
+
+            <p>Join us, find the professor you are looking for.</p>
 
             <!-- register button for new users -->
             <br>
@@ -39,7 +48,7 @@
                 <input type="text" name="username" placeholder="Username">
                 <br>
 
-                <input type="submit" name="sumbit" value="submit">
+                <input type="submit" name="submit" value="Sign up">
             </form>
 
             <script type="text/javascript">
@@ -47,10 +56,16 @@
                 function showForm() {
                     let registrationForm = document.getElementById("registrationForm");
                     let loginButton = document.getElementById("loginButton");
+                    let startButton = document.getElementById("startButton");
+                    let sideLoginButton = document.getElementById("sideLoginButton");
+
                     if (registrationForm.style.display === "none") {
                         registrationForm.style.display = "block";
                         loginButton.style.display = "none";
+                        sideLoginButton.style.display = "block";
                     }
+
+                    startButton.style.display = "none";
                 }
             </script>
 
@@ -60,7 +75,7 @@
 
             <!-- a link for visitors to visit -->
             <br>
-            <a href="explore.php">Here's what trending</a>
+            <a href="explore.php" class="visitorLink">Here's what trending</a>
 
         </div>
 
