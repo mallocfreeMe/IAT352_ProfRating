@@ -1,43 +1,40 @@
-* {
-    padding: 0px;
-    margin: 0px;
+/*
+   # is id selector,
+   . is class selector
+*/
+
+a {
+    text-decoration: none;
+}
+
+nav {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
 }
 
 .searchIcon {
-    float: left;
-    margin-left: 150px;
-    position: fixed;
-}
-
-#sideLoginButton {
-    font-size: 20px;
-    background-color: white;
-    color: black;
-    width: 100px;
-    height: 50px;
-    margin-top: 20px;
-    margin-right: 100px;
-    float: right;
-    margin-left: 300px;
+    width: 8em;
+    transform: translate(30%, -10%);
 }
 
 #searchBar {
+    border-radius: 0.15em;
+    transform: translate(0%, -200%);
     opacity: 0.5;
-    float: left;
-    margin-left: 300px;
-    display: inline-block;
     background-color: white;
     /* Icons made by "https://www.flaticon.com/authors/smashicons" */
     background-image: url("../assets/icons/search.png");
     background-repeat: no-repeat;
-    background-position: left;
-    background-size: 20px;
-    margin-top: 20px;
-    font-size: 15px;
-    height: 40px;
-    user-input: 100px;
-    position: fixed;
-    top: 0px;
+    background-position: 5%;
+    background-size: 1em;
+    font-size: 1em;
+    height: 2.5em;
+    width: 16em;
+    user-input: 10em;
 }
 
 #searchBar::placeholder {
@@ -46,58 +43,80 @@
 
 #searchBar[type="text"] {
     font-family: Arial, sans-serif;
-    padding-left: 30px;
+    padding-left: 2.5em;
 }
 
 #searchBar:focus {
+    outline: none;
     opacity: 1;
     background-color: white;
     /* Icons made by "https://www.flaticon.com/authors/smashicons" */
     background-image: url("../assets/icons/searchHover.png");
     background-repeat: no-repeat;
-    background-position: left;
-    background-size: 20px;
+    background-position: 5%;
+    background-size: 1em;
 }
 
 #searchBar:focus::placeholder {
     color: #787878;
 }
 
+#sideLoginButton {
+    cursor: pointer;
+    transform: translate(300%, 90%);
+    font-size: 1em;
+    background-color: #c8c8c8;
+    color: black;
+    width: 5em;
+    height: 2em;
+}
+
+#sideLoginButton:active {
+    color: white;
+    background-color: white;
+}
+
 .firstPage {
     /* School vector created by freepik - www.freepik.com */
-    background-image: url("../assets/images/1.jpg");
+    /*background-image: url("../assets/images/1.jpg");*/
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
-    background-blend-mode: darken;
-    background-color: #e6e6e6;
+    /*background-blend-mode: darken;*/
+    background-color: black;
     width: 100%;
-    height: 100%;
+    height: 95%;
 }
 
-.firstPage .topPart {
-    padding-top: 200px;
-    margin-left: 880px;
+.firstPage #topPart {
+    margin-top: 9%;
 }
 
-.firstPage .registerIcon {
-    margin-left: 50px;
+@font-face {
+    font-family: "websiteName_font";
+    src: url("../assets/font/Thick Demo.otf");
 }
 
-.firstPage .registrationForm {
-    padding-top: 100px;
-    width: 200px;
-    height: 200px;
-    padding-bottom: 30px;
+.websiteName {
+    font-size: 3em;
+    color: white;
+    font-family: websiteName_font;
+}
+
+.websiteSlogan {
+    color: white;
 }
 
 .firstPage button, .firstPage input[type=submit] {
-    margin: 5px;
+    outline: none;
+    cursor: pointer;
+    margin: 0.4em;
     color: white;
     background: #29c5e9;
-    font-size: 20px;
-    width: 300px;
-    height: 50px;
+    font-size: 1em;
+    width: 20em;
+    height: 3em;
+    border-radius: 0.15em;
 }
 
 .firstPage #loginButton {
@@ -105,40 +124,36 @@
     color: black;
 }
 
-.firstPage input[type=submit] {
-    margin-top: 20px;
-}
-
-.firstPage input {
-    width: 20%;
-}
-
-.firstPage input[type=email], input[type=password], input[type=text], input[type=submit] {
-    font-size: 20px;
-    width: 300px;
-    height: 50px;
-    margin-top: 15px;
-    margin-left: 5px;
+.firstPage input[type=email], .firstPage input[type=password], .firstPage input[type=text] {
+    font-size: 1em;
+    width: 20em;
+    height: 3em;
     box-sizing: border-box;
+    padding-left: 0.5em;
+    border-radius: 0.15em;
+    outline: none;
 }
 
-.firstPage .topPart .visitorLink {
+.firstPage #sign_up_button {
+    margin-top: 1em;
+    outline: none;
+}
+
+.firstPage .visitorLink {
+    display: block;
+    padding-top: 1em;
     color: white;
-    font-size: 1rem;
-    padding-left: 80px;
+    font-size: 1.2em;
 }
 
 footer {
-    height: 60px;
-    margin-top: 350px;
+    padding-top: 0.5em;
+    height: 5%;
     background: #1be958;
 }
 
 footer a {
-    position: center;
-    margin-top: 50px;
-    font-size: 20px;
-    margin-left: 900px;
+    font-size: 1.5em;
     color: white;
 }
 
@@ -156,15 +171,11 @@ footer a {
 
 .thirdPage {
     /*Photo by Cole Keister on Unsplash*/
-    background-image: url("../assets/images/3.png");
+    background-image: url("../assets/images/test.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-color: #e6733a;
     font-size: 2rem;
     width: 100%;
-    height: 120%;
-}
-
-a {
-    text-decoration: none;
+    height: 100%;
 }

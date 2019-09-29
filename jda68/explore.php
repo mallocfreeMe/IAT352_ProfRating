@@ -1,6 +1,15 @@
 <html lang="en">
 <body>
 
+<!-- Navigation Menu-->
+<nav class="navigation">
+    <figure>
+        <img src="assets/images/logoHead.png">
+    </figure>
+
+    <input type="text" placeholder="Search Prof" size="50">
+</nav>
+
 <?php
 // https://stackoverflow.com/questions/518795/dynamically-display-a-csv-file-as-an-html-table-on-a-web-page
 echo "<table>\n\n";

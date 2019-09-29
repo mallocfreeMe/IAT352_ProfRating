@@ -1,0 +1,49 @@
+body {
+    margin: 0px;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+[class^='grid-col-'] {
+    float: left;
+    padding: 0;
+    text-align: center;
+}
+
+.grid-col-1of2,
+.grid-col-1of3 {
+    width: 100%;
+}
+
+/* 720px/16=45em */
+
+@media (min-width: 45em) {
+    .grid-col-1of2 {
+        flex-basis: 50%;
+    }
+
+    .grid-col-1of3 {
+        flex-basis: 30%;
+    }
+}
+
+/* 960px/16=60*/
+
+@media (min-width: 60em) {
+    .grid-col-1of3 {
+        flex-basis: 33.33333%
+    }
+}
