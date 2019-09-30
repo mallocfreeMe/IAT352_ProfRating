@@ -4,26 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sign up | ProfRating</title>
+    <link rel="shortcut icon" type="image/png" href="assets/icons/favicon.png"/>
     <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="css/publicNavigationBar.css">
     <link rel="stylesheet" href="css/forRegister.css">
+
+    <!-- raw js to animate the form -->
+    <script type="text/javascript">
+        // learn how to show and hide form from https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp
+        function showForm() {
+            let registrationForm = document.getElementById("registrationForm");
+            let loginButton = document.getElementById("loginButton");
+            let startButton = document.getElementById("startButton");
+            let sideLoginButton = document.getElementById("sideLoginButton");
+            let visitorLink = document.getElementById("visitor_link");
+
+            if (registrationForm.style.display === "none") {
+                registrationForm.style.display = "block";
+                loginButton.style.display = "none";
+                sideLoginButton.style.display = "block";
+            }
+
+            startButton.style.display = "none";
+            visitorLink.style.display = "none";
+        }
+    </script>
 </head>
 
 <body>
 
+<!-- nav -->
 <header>
 
     <nav>
         <div class="grid">
 
+            <!-- search bar with its icon -->
             <div class="grid-col-1of3">
-                <img src="assets/images/logoHead.png" class="searchIcon">
+                <img src="assets/icons/professor.png" class="searchIcon">
                 <input type="text" placeholder="Search Prof" size="50" id="searchBar">
             </div>
 
             <div class="grid-col-1of3"></div>
 
             <div class="grid-col-1of3">
+
+                <!-- nav log in button-->
                 <button id="sideLoginButton" style="display: none" onclick="location.href='login.php'">Log in</button>
+
+                <!-- nav sign up button-->
+                <button id="sideSignUpButton" style="display: none" onclick="location.href='register.php'">Sign Up
+                </button>
             </div>
 
         </div>
@@ -38,10 +69,13 @@
 
         <div class="grid-col-1of3"></div>
 
+        <!-- main content -->
         <div class="grid-col-1of3" id="topPart">
 
+            <!-- website name -->
             <h1 class="websiteName">ProfRating</h1>
 
+            <!-- web slogan -->
             <p class="websiteSlogan">Join us, find the professor you are looking for.</p>
             <br>
 
@@ -70,28 +104,8 @@
             <br>
 
             <!-- a link for visitors to visit -->
-            <a href="explore.php" class="visitorLink" id="visitor_link">Here's what trending</a>
+            <a href="explore.php" class="visitorLink" id="visitor_link">Here's Prof List</a>
 
-
-            <script type="text/javascript">
-                // learn how show and hide form from https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp
-                function showForm() {
-                    let registrationForm = document.getElementById("registrationForm");
-                    let loginButton = document.getElementById("loginButton");
-                    let startButton = document.getElementById("startButton");
-                    let sideLoginButton = document.getElementById("sideLoginButton");
-                    let visitorLink= document.getElementById("visitor_link");
-
-                    if (registrationForm.style.display === "none") {
-                        registrationForm.style.display = "block";
-                        loginButton.style.display = "none";
-                        sideLoginButton.style.display = "block";
-                    }
-
-                    startButton.style.display = "none";
-                    visitorLink.style.display = "none";
-                }
-            </script>
         </div>
 
         <div class="grid-col-1of3"></div>
