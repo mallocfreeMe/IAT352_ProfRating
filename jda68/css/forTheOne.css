@@ -3,6 +3,42 @@ nav {
     background-color: #1e4278;
 }
 
-#content {
-    margin-top: 18em;
+#filterCol {
+    color:white;
+    padding-top: 2em;
+}
+
+#sideSignUpButton {
+    margin-left: 1em;
+    margin-right: 10em;
+}
+
+#contentGrid {
+    margin-top: 10em;
+}
+
+#contentList {
+    list-style: none;
+}
+
+#contentList li {
+    margin: 2em;
+    text-align: right;
+}
+
+.card {
+    margin-left: 15em;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 40%;
+    text-align: left;
+}
+
+.container {
+    padding: 2px 16px;
+}
+
+textarea {
+    width: 100%;
+    height: 20%;
 }

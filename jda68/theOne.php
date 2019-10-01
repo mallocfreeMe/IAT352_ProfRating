@@ -38,26 +38,86 @@
 
 </header>
 
-<div class="grid">
+<div class="grid" id="contentGrid">
 
     <div class="grid-col-1of3"></div>
 
     <div class="grid-col-1of3" id="content">
+        <!-- Professor name -->
+        <div class="card">
+
+            <img src="assets/icons/male.png" alt="Avatar" style="width:100%">
+
+            <div class="container">
+
+                <?php
+
+                echo "<h4><b>";
+                // get the id through url
+                @$theOneIndex = $_GET['id'];
+
+                if (is_numeric($theOneIndex)) {
+                    $test = fopen("assets/data/ratemyprofessors.csv", "r");
+
+                    $testIndex = 0;
+                    while (($line = fgetcsv($test)) !== false) {
+
+                        if ($testIndex == $theOneIndex) {
+                            // length: 6 cells
+                            $name = htmlspecialchars($line[0]);
+                            // remove any "," in the name field
+                            $name = str_replace(",", " ", $name);
+                            echo $name;
+                            break;
+                        }
+
+                        $testIndex++;
+                    }
+
+                    fclose($test);
+                } else {
+                    header("Location: explore.php");
+                    die();
+                }
+                echo "</b></h4>";
+
+                ?>
+                <p>Professor</p>
+            </div>
+
+        </div>
+
         <?php
+
+        echo "<ul id='contentList'>";
+        // get the id through url
         @$theOneIndex = $_GET['id'];
 
         if (is_numeric($theOneIndex)) {
             $test = fopen("assets/data/ratemyprofessors.csv", "r");
 
+            $firstLine = array();
+
             $testIndex = 0;
             while (($line = fgetcsv($test)) !== false) {
+                // get the first line of csv file
+                if ($testIndex == 0) {
+                    $firstLine = $line;
+                }
+
                 if ($testIndex == $theOneIndex) {
-                    foreach ($line as $cell) {
-                        // length: 6 cells
-                        echo htmlspecialchars($cell) . "<br>";
+                    // length: 6 cells
+                    for ($cell = 1; $cell < count($firstLine); $cell++) {
+                        echo "<li>" .
+                            htmlspecialchars($firstLine[$cell]) .
+                            ":" . " " .
+                            htmlspecialchars($line[$cell]) .
+                            "</li>";
                     }
+
                     break;
                 }
+
                 $testIndex++;
             }
 
@@ -66,8 +126,34 @@
             header("Location: explore.php");
             die();
         }
+        echo "</ul>";
+
         ?>
 
+        <!-- generate comment sections based on Total Ratings -->
+        <?php
+
+        if (is_numeric($theOneIndex)) {
+            $test = fopen("assets/data/ratemyprofessors.csv", "r");
+
+            $testIndex = 0;
+            $numberOfComments = 0;
+            while (($line = fgetcsv($test)) !== false) {
+                if ($testIndex == $theOneIndex) {
+                    // length: 6 cells
+                    $numberOfComments = $line[2];
+                    break;
+                }
+                $testIndex++;
+            }
+            fclose($test);
+
+            for ($i = 0; $i < $numberOfComments; $i++) {
+                echo "<textarea readonly>This is a comment. You Sucker!</textarea><br>";
+            }
+        }
+
+        ?>
     </div>
 
     <div class="grid-col-1of3"></div>

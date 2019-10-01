@@ -3,6 +3,16 @@ nav {
     background-color: #1e4278;
 }
 
+#filterCol {
+    color:white;
+    padding-top: 2em;
+}
+
+#sideSignUpButton {
+    margin-left: 1em;
+    margin-right: 10em;
+}
+
 #table {
     margin-top: 10em;
 }
