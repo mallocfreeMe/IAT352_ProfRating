@@ -149,7 +149,7 @@
             fclose($test);
 
             for ($i = 0; $i < $numberOfComments; $i++) {
-                echo "<textarea readonly>This is a comment. You Sucker!</textarea><br>";
+                echo "<textarea readonly>This is a comment.</textarea><br>";
             }
         }
 

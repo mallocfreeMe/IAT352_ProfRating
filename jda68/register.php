@@ -29,6 +29,20 @@
             visitorLink.style.display = "none";
         }
     </script>
+
+    <script>
+        function validate() {
+            let email = document.getElementById("registrationFormEmail").value;
+            let password = document.getElementById("registrationFormPassword").value;
+            let username = document.getElementById("registrationFormUsername").value;
+            if (password === "" || email === "" || username === "") {
+                alert("You do have to fill this stuff out, you know.");
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -84,15 +98,15 @@
             <br>
 
             <!-- registration form -->
-            <form action="processRegister.php" method="post" id="registrationForm" style="display: none">
+            <form action="processRegister.php" method="post" id="registrationForm" style="display: none" onsubmit="return validate();">
 
-                <input type="email" name="email" placeholder="Email">
+                <input type="email" name="email" placeholder="Email" id="registrationFormEmail">
                 <br>
 
-                <input type="password" name="password" placeholder="Password">
+                <input type="password" name="password" placeholder="Password" id="registrationFormPassword">
                 <br>
 
-                <input type="text" name="username" placeholder="Username">
+                <input type="text" name="username" placeholder="Username" id="registrationFormUsername">
                 <br>
 
                 <input id="sign_up_button" type="submit" name="submit" value="Sign up">

@@ -8,6 +8,19 @@
     <link rel="stylesheet" href="css/grid.css">
     <link rel="stylesheet" href="css/publicNavigationBar.css">
     <link rel="stylesheet" href="css/forLogin.css">
+
+    <script>
+        function validate() {
+            let email = document.getElementById("loginFormEmail").value;
+            let password = document.getElementById("loginFormPassword").value;
+            if (password === "" || email === "") {
+                alert("You do have to fill this stuff out, you know.");
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
 </head>
 
 <body class="noScroll">
@@ -49,7 +62,7 @@
         <h1 class="websiteName">ProfRating</h1>
 
         <!-- log in form -->
-        <form action="processLogin.php" id="loginForm" method="post">
+        <form action="processLogin.php" id="loginForm" method="post" onsubmit="return validate();">
             <input type="email" name="email" placeholder="Email" id="loginFormEmail">
             <br>
 
