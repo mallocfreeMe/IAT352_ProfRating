@@ -94,6 +94,12 @@
     font-family: sans-serif;
 }
 
+#visitorLinkIcon {
+    transform: translate(-40%, 20%);
+    width: 2em;
+    height: 2em;
+}
+
 footer {
     padding-top: 0.5em;
     height: 5%;

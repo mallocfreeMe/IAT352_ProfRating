@@ -55,7 +55,9 @@
 
             <!-- search bar with its icon -->
             <div class="grid-col-1of3">
-                <img src="assets/icons/professor.png" class="searchIcon">
+                <a href="explore.php">
+                    <img src="assets/icons/professor.png" class="searchIcon">
+                </a>
                 <input type="text" placeholder="Search Prof" size="50" id="searchBar">
             </div>
 
@@ -118,7 +120,9 @@
             <br>
 
             <!-- a link for visitors to visit -->
-            <a href="explore.php" class="visitorLink" id="visitor_link">Here's Prof List</a>
+            <a href="explore.php" class="visitorLink" id="visitor_link">
+                <img src="assets/icons/compass.png" id="visitorLinkIcon">Here's Prof List
+            </a>
 
         </div>
 

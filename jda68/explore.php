@@ -183,7 +183,7 @@
                     </select>
 
                     <input type="submit" name="filterSubmit" value="Filter">
-                    <a href="explore.php" id="filterCleanButton">Clean</a>
+                    <a href="explore.php" id="filterCleanButton">Restart</a>
                 </form>
 
             </div>
@@ -260,6 +260,15 @@
                         $filterResult = false;
                     }
                 }
+
+                $searchForFirstLine = array_search("Department", $line);
+                if ($searchForFirstLine == true) {
+                    echo "<tr>";
+                    foreach ($line as $cell) {
+                        echo "<td>" . htmlspecialchars($cell) . "</td>";
+                    }
+                    echo "</tr>\n";
+                }
             }
 
             if ($filterResult != false) {
@@ -272,14 +281,22 @@
                 foreach ($line as $cell) {
                     // length: 6 cells
 
-                    if ($count == 0 && $countForFirstLine == 1) {
+                    if (empty($filterSubmit)) {
+                        if ($count == 0 && $countForFirstLine == 1) {
+                            echo "<td><a href='theOne.php?id="
+                                . $index
+                                . "'>"
+                                . htmlspecialchars($cell)
+                                . "</a></td>";
+                        } else {
+                            echo "<td>" . htmlspecialchars($cell) . "</td>";
+                        }
+                    } else {
                         echo "<td><a href='theOne.php?id="
                             . $index
                             . "'>"
                             . htmlspecialchars($cell)
                             . "</a></td>";
-                    } else {
-                        echo "<td>" . htmlspecialchars($cell) . "</td>";
                     }
 
                     if ($count <= 5) {
