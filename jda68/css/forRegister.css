@@ -87,7 +87,7 @@
 }
 
 .firstPage .visitorLink {
-    display: block;
+    display: inline-block;
     padding-top: 1em;
     color: white;
     font-size: 1em;

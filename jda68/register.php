@@ -28,9 +28,9 @@
             startButton.style.display = "none";
             visitorLink.style.display = "none";
         }
-    </script>
 
-    <script>
+        // use onsubmit method to validate the form before submitted to the php
+        // I learnt it from https://www.w3schools.com/jsref/event_onsubmit.asp
         function validate() {
             let email = document.getElementById("registrationFormEmail").value;
             let password = document.getElementById("registrationFormPassword").value;

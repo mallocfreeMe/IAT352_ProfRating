@@ -45,116 +45,81 @@
     <div class="grid-col-1of3"></div>
 
     <div class="grid-col-1of3" id="content">
-        <!-- Professor name -->
-        <div class="card">
 
-            <img src="assets/icons/male.png" alt="Avatar" style="width:100%">
-
-            <div class="container">
-
-                <?php
-
-                echo "<h4><b>";
-                // get the id through url
-                @$theOneIndex = $_GET['id'];
-
-                if (is_numeric($theOneIndex)) {
-                    $test = fopen("assets/data/ratemyprofessors.csv", "r");
-
-                    $testIndex = 0;
-                    while (($line = fgetcsv($test)) !== false) {
-
-                        if ($testIndex == $theOneIndex) {
-                            // length: 6 cells
-                            $name = htmlspecialchars($line[0]);
-                            // remove any "," in the name field
-                            $name = str_replace(",", " ", $name);
-                            echo $name;
-                            break;
-                        }
-
-                        $testIndex++;
-                    }
-
-                    fclose($test);
-                } else {
-                    header("Location: explore.php");
-                    die();
-                }
-                echo "</b></h4>";
-
-                ?>
-                <p>Professor</p>
-            </div>
-
-        </div>
-
+        <!-- Get the selected row by adding all the information to an array -->
         <?php
+        // get the name of the selected professor through GET method
+        @$nameEncode = $_GET['name'];
 
-        echo "<ul id='contentList'>";
-        // get the id through url
-        @$theOneIndex = $_GET['id'];
+        // create an empty array to store the row
+        $array = array("");
 
-        if (is_numeric($theOneIndex)) {
-            $test = fopen("assets/data/ratemyprofessors.csv", "r");
+        // if encoded name is empty meaning users open this page directly without selecting any professor
+        // it will cause fatal error, so the website decides to redirect the users to explore page and kill itself
+        if (!empty($nameEncode)) {
+            $name = urldecode($nameEncode);
 
-            $firstLine = array();
+            // open csv file, get the handler
+            $handler = fopen("assets/data/ratemyprofessors.csv", "r");
 
-            $testIndex = 0;
-            while (($line = fgetcsv($test)) !== false) {
-                // get the first line of csv file
-                if ($testIndex == 0) {
-                    $firstLine = $line;
-                }
+            // if handler is true
+            if ($handler) {
 
-                if ($testIndex == $theOneIndex) {
-                    // length: 6 cells
-                    for ($cell = 1; $cell < count($firstLine); $cell++) {
-                        echo "<li>" .
-                            htmlspecialchars($firstLine[$cell]) .
-                            ":" . " " .
-                            htmlspecialchars($line[$cell]) .
-                            "</li>";
+                // iterate through the csv file
+                // find the line which contains the same name by using in_array function
+                // learnt in_array from https://www.php.net/manual/en/function.in-array.php
+                while (($line = fgetcsv($handler)) !== false) {
+                    $key = in_array($name, $line);
+
+                    // if it finds the line
+                    // set the array to the line
+                    if ($key) {
+                        $array = $line;
                     }
-
-                    break;
                 }
 
-                $testIndex++;
+                // close handler
+                fclose($handler);
             }
 
-            fclose($test);
         } else {
             header("Location: explore.php");
             die();
         }
-        echo "</ul>";
-
         ?>
 
-        <!-- generate comment sections based on Total Ratings -->
+        <!-- professor information -->
+        <div id="professorProfile" class="grid">
+
+            <div class="grid-col-1of2">
+                <img src="assets/icons/male.png">
+            </div>
+
+            <div class="grid-col-1of2" id="colOne">
+                <p>Professor: <b><?php echo $array[0]; ?></b></p><br>
+                <p>Department: <b><?php echo $array[5]; ?></b></p><br>
+                <p>College: <b><?php echo $array[6]; ?></b></p><br>
+                <p>Overall Quality: <b><?php echo $array[1]; ?></b></p><br>
+                <p>Total Ratings: <b><?php echo $array[2]; ?></b></p><br>
+                <p>Hotness: <b><?php echo $array[3]; ?></b></p><br>
+                <p>Easiness: <b><?php echo $array[4]; ?></b></p><br>
+            </div>
+        </div>
+
+        <!-- user comment section -->
+        <!-- submit to the page the user is visiting -->
+        <div id="userCommentSection">
+            <textarea placeholder="user comments here"></textarea>
+            <button>Submit</button>
+        </div>
+
+        <!-- based on total ratings' number to generate comments -->
+        <!-- array = 0 -> name, 1 -> overall quality, 2->total ratings, 3->hot, 4->easiness, 5->department, 6->college -->
         <?php
-
-        if (is_numeric($theOneIndex)) {
-            $test = fopen("assets/data/ratemyprofessors.csv", "r");
-
-            $testIndex = 0;
-            $numberOfComments = 0;
-            while (($line = fgetcsv($test)) !== false) {
-                if ($testIndex == $theOneIndex) {
-                    // length: 6 cells
-                    $numberOfComments = $line[2];
-                    break;
-                }
-                $testIndex++;
-            }
-            fclose($test);
-
-            for ($i = 0; $i < $numberOfComments; $i++) {
-                echo "<textarea readonly>This is a comment.</textarea><br>";
-            }
+        for ($i = 0; $i < $array[2]; $i++) {
+            echo "<textarea readonly>". "This is " . "#" . $i . " comment".
+                "</textarea><br>";
         }
-
         ?>
     </div>
 

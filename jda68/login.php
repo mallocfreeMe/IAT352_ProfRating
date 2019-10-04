@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="css/forLogin.css">
 
     <script>
+        // use onsubmit method to validate the form before submitted to the php
+        // I learnt it from https://www.w3schools.com/jsref/event_onsubmit.asp
         function validate() {
             let email = document.getElementById("loginFormEmail").value;
             let password = document.getElementById("loginFormPassword").value;
@@ -31,6 +33,7 @@
     <nav>
         <div class="grid">
 
+            <!-- search bar -->
             <div class="grid-col-1of3">
                 <a href="explore.php">
                     <img src="assets/icons/professor.png" class="searchIcon">
