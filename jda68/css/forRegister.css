@@ -19,12 +19,6 @@
     margin-top: 9%;
 }
 
-@media (max-width: 75em) {
-    .firstPage #topPart {
-        margin-top: 200px;
-    }
-}
-
 @font-face {
     font-family: "websiteName_font";
     src: url("../assets/font/Thick Demo.otf");

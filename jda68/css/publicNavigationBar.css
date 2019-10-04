@@ -59,10 +59,14 @@ nav {
 }
 
 #sideLoginButton {
+    position: fixed;
+    display: inline-block;
+    margin-left: 8em;
+    margin-right: 4em;
+    margin-top: 2em;
     outline: none;
     border-radius: 0.15em;
     cursor: pointer;
-    transform: translate(300%, 90%);
     font-size: 1em;
     background-color: #c8c8c8;
     color: black;
@@ -77,10 +81,11 @@ nav {
 }
 
 #sideSignUpButton {
+    position: fixed;
+    margin-top: 2em;
     outline: none;
     border-radius: 0.15em;
     cursor: pointer;
-    transform: translate(300%, 90%);
     font-size: 1em;
     background-color: #29c5e9;
     color: white;
