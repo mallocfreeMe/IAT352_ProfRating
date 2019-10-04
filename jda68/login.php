@@ -48,7 +48,7 @@
                 <button id="sideLoginButton" style="display: none" onclick="location.href='login.php'">Log in</button>
 
                 <!-- nav sign up button-->
-                <button id="sideSignUpButton" onclick="location.href='register.php'">Sign Up</button>
+                <button id="sideSignUpButton" onclick="location.href='index.php'">Sign Up</button>
             </div>
 
         </div>
@@ -90,7 +90,7 @@
     <div class="grid-col-1of3"></div>
 
     <div class="grid-col-1of3">
-        <a href="register.php#definition">What is ProfRating?</a>
+        <a href="index.php#definition">What is ProfRating?</a>
     </div>
 
     <div class="grid-col-1of3"></div>

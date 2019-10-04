@@ -7,7 +7,7 @@
     <link rel="shortcut icon" type="image/png" href="assets/icons/favicon.png"/>
     <link rel="stylesheet" href="css/grid.css">
     <link rel="stylesheet" href="css/publicNavigationBar.css">
-    <link rel="stylesheet" href="css/forRegister.css">
+    <link rel="stylesheet" href="css/forIndex.css">
 
     <!-- raw js to animate the form -->
     <script type="text/javascript">
@@ -69,7 +69,7 @@
                 <button id="sideLoginButton" style="display: none" onclick="location.href='login.php'">Log in</button>
 
                 <!-- nav sign up button-->
-                <button id="sideSignUpButton" style="display: none" onclick="location.href='register.php'">Sign Up
+                <button id="sideSignUpButton" style="display: none" onclick="location.href='index.php'">Sign Up
                 </button>
             </div>
 

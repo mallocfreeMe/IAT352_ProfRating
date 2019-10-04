@@ -217,7 +217,7 @@
                 <!-- nav log in button-->
                 <button id="sideLoginButton" onclick="location.href='login.php'">Log in</button>
                 <!-- nav sign up button-->
-                <button id="sideSignUpButton" onclick="location.href='register.php'">Sign Up</button>
+                <button id="sideSignUpButton" onclick="location.href='index.php'">Sign Up</button>
             </div>
 
         </div>

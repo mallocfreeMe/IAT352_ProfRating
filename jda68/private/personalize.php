@@ -23,7 +23,7 @@ if (!empty($name)) {
     echo "<br>";
     echo "You just need to click few steps to finish registration";
 } else {
-    header("Location: ../register.php");
+    header("Location: ../index.php");
     die();
 }
 
