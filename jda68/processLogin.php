@@ -32,6 +32,11 @@ if (!empty($email) || !empty($password)) {
         fclose($handler);
         header("Location: login.php");
         die();
+    } else {
+        // if file cannot be opened
+        // redirect to the register page, and kill itself
+        header("Location: register.php");
+        die();
     }
 } else {
     header("Location: login.php");
