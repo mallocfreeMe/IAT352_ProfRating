@@ -1,0 +1,54 @@
+/* override some styles in nav */
+nav {
+    background-color: #1e4278;
+}
+
+#filterCol {
+    color: white;
+    padding-top: 2em;
+}
+
+#contentGrid {
+    margin-top: 12em;
+}
+
+/* styling starts from here */
+
+#professorProfile {
+    margin-bottom: 5em;
+    width: 100%;
+    height: 10em;
+}
+
+#professorProfile img {
+    float: left;
+    width: 10em;
+    height: 10em;
+    border-style: solid;
+    margin-bottom: 1em;
+}
+
+#professorProfile #colOne p{
+    margin: 0;
+    float: left;
+    text-align: left;
+}
+
+#userCommentSection {
+    width: 100%;
+    margin-bottom: 5em;
+}
+
+#userCommentSection button {
+    float: right;
+    margin-top: 2em;
+    color: white;
+    background-color: red;
+    width: 6em;
+    height: 2em;
+}
+
+textarea {
+    width: 100%;
+    height: 10em;
+}

@@ -1,0 +1,129 @@
+/*
+   # is id selector,
+   . is class selector
+*/
+
+.firstPage {
+    /* School vector created by freepik - www.freepik.com */
+    /*background-image: url("../assets/images/1.jpg");*/
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    /*background-blend-mode: darken;*/
+    background-color: black;
+    width: 100%;
+    height: 95%;
+}
+
+.firstPage #topPart {
+    margin-top: 9%;
+}
+
+@font-face {
+    font-family: "websiteName_font";
+    src: url("../assets/font/Thick Demo.otf");
+}
+
+.websiteName {
+    font-size: 3em;
+    color: white;
+    font-family: websiteName_font;
+}
+
+.websiteSlogan {
+    color: white;
+}
+
+.firstPage button, .firstPage input[type=submit] {
+    outline: none;
+    cursor: pointer;
+    margin: 0.4em;
+    color: white;
+    background: #29c5e9;
+    font-size: 1em;
+    width: 20em;
+    height: 3em;
+    border-radius: 0.15em;
+    border-style: none;
+}
+
+.firstPage #loginButton {
+    background: white;
+    color: black;
+}
+
+.firstPage input[type=email], .firstPage input[type=password], .firstPage input[type=text] {
+    font-size: 1em;
+    width: 20em;
+    height: 3em;
+    box-sizing: border-box;
+    padding-left: 0.5em;
+    border-radius: 0.05em;
+    outline: none;
+    border-style: none;
+}
+
+.firstPage input[type=email] {
+     border-bottom: solid;
+     border-color: #c8c8c8;
+     border-width: thin;
+ }
+
+.firstPage input[type=password] {
+    border-bottom: solid;
+    border-color: #c8c8c8;
+    border-width: thin;
+}
+
+.firstPage #sign_up_button {
+    margin-top: 1em;
+    outline: none;
+}
+
+.firstPage .visitorLink {
+    display: inline-block;
+    padding-top: 1em;
+    color: white;
+    font-size: 1em;
+    font-family: sans-serif;
+}
+
+#visitorLinkIcon {
+    transform: translate(-40%, 20%);
+    width: 2em;
+    height: 2em;
+}
+
+footer {
+    padding-top: 0.5em;
+    height: 5%;
+    background: #1be958;
+}
+
+footer a {
+    font-size: 1.5em;
+    color: white;
+}
+
+.secondPage {
+    /* Photo by Patrick Tomasso on Unsplash */
+    background-image: url("../assets/images/2.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #1be958;
+    background-attachment: fixed;
+    font-size: 2rem;
+    width: 100%;
+    height: 100%;
+}
+
+.thirdPage {
+    /*Photo by Cole Keister on Unsplash*/
+    background-image: url("../assets/images/test.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #e6733a;
+    font-size: 2rem;
+    width: 100%;
+    height: 100%;
+}

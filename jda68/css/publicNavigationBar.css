@@ -1,0 +1,100 @@
+a {
+    text-decoration: none;
+}
+
+nav {
+    padding-bottom: 1.5em;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.searchIcon {
+    width: 3em;
+    transform: translate(-20%, 35%);
+}
+
+#searchBar {
+    border-radius: 0.15em;
+    /*transform: translate(0%, -200%);*/
+    opacity: 0.5;
+    background-color: white;
+    /* Icons made by "https://www.flaticon.com/authors/smashicons" */
+    background-image: url("../assets/icons/search.png");
+    background-repeat: no-repeat;
+    background-position: 5%;
+    background-size: 1em;
+    font-size: 1em;
+    height: 2.5em;
+    width: 16em;
+    user-input: 10em;
+    border-style: none;
+}
+
+#searchBar::placeholder {
+    color: #c8c8c8;
+}
+
+#searchBar[type="text"] {
+    font-family: Arial, sans-serif;
+    padding-left: 2.5em;
+}
+
+#searchBar:focus {
+    outline: none;
+    opacity: 1;
+    background-color: white;
+    /* Icons made by "https://www.flaticon.com/authors/smashicons" */
+    background-image: url("../assets/icons/searchHover.png");
+    background-repeat: no-repeat;
+    background-position: 5%;
+    background-size: 1em;
+}
+
+#searchBar:focus::placeholder {
+    color: #787878;
+}
+
+#sideLoginButton {
+    position: fixed;
+    display: inline-block;
+    margin-left: 8em;
+    margin-right: 4em;
+    margin-top: 2em;
+    outline: none;
+    border-radius: 0.15em;
+    cursor: pointer;
+    font-size: 1em;
+    background-color: #c8c8c8;
+    color: black;
+    width: 5em;
+    height: 2em;
+    border-style: none;
+}
+
+#sideLoginButton:active {
+    color: black;
+    background-color: white;
+}
+
+#sideSignUpButton {
+    position: fixed;
+    margin-top: 2em;
+    outline: none;
+    border-radius: 0.15em;
+    cursor: pointer;
+    font-size: 1em;
+    background-color: #29c5e9;
+    color: white;
+    width: 5em;
+    height: 2em;
+    border-style: none;
+}
+
+#sideSignUpButton:active {
+    color: black;
+    background-color: white;
+}
