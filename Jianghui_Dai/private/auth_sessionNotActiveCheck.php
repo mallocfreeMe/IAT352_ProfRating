@@ -3,7 +3,7 @@
 // check if there is an active session
 // if there is no active session --> user is not logged in
 // redirect user to login page
-//test
+//test again
 session_start();
 
 if(!isset($_SESSION["username"])){
