@@ -3,41 +3,51 @@
 
 <!-- This is the page I used to check log in form -->
 <?php
-@$email = $_POST["email"];
-@$password = $_POST["password"];
+// check and filter data coming from the user
+@$email = trim($_POST["email"]);
+@$password = trim($_POST["password"]);
 
 // if email and password are both not empty
 if (!empty($email) || !empty($password)) {
 
-    // open the .txt file
-    $file = "private/user.txt";
-    $handler = fopen($file, "r");
+    // Create a database connection
+    $dbhost = "localhost";
+    $dbuser = "root";
+    $dbpass = "";
+    $dbname = "Jianghui_Dai";
+    $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
-    if ($handler) {
-        // read the file until it reaches to the end
-        while (!feof($handler)) {
-            // remove all the ',' from the array
-            $array = explode(',', fgets($handler));
-            // find the right match
-            if ($array["0"] == $email && $array["1"] == $password) {
-                fclose($handler);
-
-                // pass name to personalize page through url
-                $string = "Location: private/personalize.php?name=" . $array[2];
-                header($string);
-                die();
-            }
-        }
-        // did not find the right match, go back to log in page
-        fclose($handler);
-        header("Location: login.php");
-        die();
-    } else {
-        // if file cannot be opened
-        // redirect to the register page, and kill itself
-        header("Location: index.php");
-        die();
+    // Test if connection succeeded
+    if (mysqli_connect_errno()) {
+        // if connection failed, skip the rest of PHP code, and print an error
+        die("Database connection failed: " .
+            mysqli_connect_error() .
+            " (" . mysqli_connect_errno() . ")"
+        );
     }
+
+    // escape special chars from user
+    if (!get_magic_quotes_gpc()) {
+        $password = addslashes($password);
+        $email = addslashes($email);
+    }
+
+    // query to select user_id from the User table
+    $query = "SELECT User.user_id FROM User WHERE User.email = '$email' AND User.password = '$password'";
+
+    $result = mysqli_query($connection, $query);
+
+    if (mysqli_num_rows($result) != 0) {
+        // if selection success, go to personalize page
+        mysqli_close($connection);
+        header("Location: private/home.php");
+    } else {
+        // if selection failed, leave the message
+        mysqli_close($connection);
+        header("Location: login.php");
+        die("Database query failed. " . mysqli_error($connection));
+    }
+
 } else {
     header("Location: login.php");
     die();

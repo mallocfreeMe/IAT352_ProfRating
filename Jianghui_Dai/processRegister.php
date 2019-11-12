@@ -3,9 +3,10 @@
 
 <!-- This is the page I used to handle registration -->
 <?php
-@$email = $_POST["email"];
-@$password = $_POST["password"];
-@$username = $_POST["username"];
+// check and filter data coming from the user
+@$email = trim($_POST["email"]);
+@$password = trim($_POST["password"]);
+@$username = trim($_POST["username"]);
 
 // if all input fields from register form are not empty
 if (!empty($email) && !empty($password) && !empty($username)) {
@@ -14,7 +15,7 @@ if (!empty($email) && !empty($password) && !empty($username)) {
     $dbhost = "localhost";
     $dbuser = "root";
     $dbpass = "";
-    $dbname = "JianghuiDai";
+    $dbname = "Jianghui_Dai";
     $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
     // Test if connection succeeded
@@ -26,7 +27,28 @@ if (!empty($email) && !empty($password) && !empty($username)) {
         );
     }
 
+    // escape special chars from user
+    if (!get_magic_quotes_gpc()) {
+        $username = addslashes($username);
+        $password = addslashes($password);
+        $email = addslashes($email);
+    }
 
+    // query to insert user info to the User table
+    $query = "INSERT INTO User (username, password, email) VALUES ('$username', '$password', '$email')";
+
+    $result = mysqli_query($connection, $query);
+
+    if ($result) {
+        // if insert success, go to personalize page
+        header("Location: private/home.php");
+    } else {
+        // if insert failed, leave the message
+        die("Database query failed. " . mysqli_error($connection));
+    }
+
+    // Close database connection
+    mysqli_close($connection);
 
 } else {
     // if all input fields from register from are empty

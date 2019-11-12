@@ -47,7 +47,7 @@
 
 <body>
 
-<!-- Create JianghuiDai database -->
+<!-- Create Jianghui_Dai database -->
 <?php
 
 // Create connection
@@ -63,7 +63,7 @@ if (!$connection) {
 
 // if the JianghuiDai database is not exist, create this database
 // learn how to check if it exists from https://stackoverflow.com/questions/838978/how-to-check-if-mysql-database-exists
-$sql = "CREATE DATABASE IF NOT EXISTS JianghuiDai";
+$sql = "CREATE DATABASE IF NOT EXISTS Jianghui_Dai";
 $result = mysqli_query($connection, $sql);
 if (!$result) {
     die("Database query failed.");
@@ -74,13 +74,13 @@ mysqli_close($connection);
 
 ?>
 
-<!-- Create Professor table and User table in JianghuiDai database-->
+<!-- Create Professor table and User table in Jianghui_Dai database-->
 <?php
 
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "JianghuiDai";
+$dbname = "Jianghui_Dai";
 
 // Create connection
 $connection = mysqli_connect($servername, $username, $password, $dbname);
