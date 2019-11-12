@@ -56,8 +56,6 @@ $username = "root";
 $password = "";
 $connection = mysqli_connect($servername, $username, $password);
 
-$databaseIsCreated = false;
-
 // Check connection
 if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
@@ -74,35 +72,33 @@ if (!$result) {
 // Close database connection
 mysqli_close($connection);
 
-$databaseIsCreated = true;
 ?>
 
 <!-- Create Professor table and User table in JianghuiDai database-->
 <?php
 
-if ($databaseIsCreated) {
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "JianghuiDai";
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "JianghuiDai";
 
-    // Create connection
-    $connection = mysqli_connect($servername, $username, $password, $dbname);
+// Create connection
+$connection = mysqli_connect($servername, $username, $password, $dbname);
 
-    // Check connection
-    if (!$connection) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
+// Check connection
+if (!$connection) {
+    die("Connection failed: " . mysqli_connect_error());
+}
 
-    // sql to create User table
-    $sqlForUser = "CREATE TABLE IF NOT EXISTS User (
+// sql to create User table
+$sqlForUser = "CREATE TABLE IF NOT EXISTS User (
                 user_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 username VARCHAR(30) NOT NULL,
                 password VARCHAR(30) NOT NULL,
                 email VARCHAR(50))";
 
-    // sql to create Professor table
-    $sqlForProfessor = "CREATE TABLE IF NOT EXISTS Professor(
+// sql to create Professor table
+$sqlForProfessor = "CREATE TABLE IF NOT EXISTS Professor(
                     Professor_id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                     NAME VARCHAR(35) NOT NULL,
                     Overall_Quality NUMERIC(3, 1),
@@ -112,40 +108,39 @@ if ($databaseIsCreated) {
                     Department VARCHAR(30) NOT NULL,
                     College VARCHAR(9) NOT NULL)";
 
-    $resultForUser = mysqli_query($connection, $sqlForUser);
-    $resultForProfessor = mysqli_query($connection, $sqlForProfessor);
+$resultForUser = mysqli_query($connection, $sqlForUser);
+$resultForProfessor = mysqli_query($connection, $sqlForProfessor);
 
-    if (!$resultForUser || !$resultForProfessor) {
-        die("Database query failed.");
-    }
+if (!$resultForUser || !$resultForProfessor) {
+    die("Database query failed.");
+}
 
-    // open the insert sql file
-    $insertFile = fopen("assets/data/insertProfessor.sql", "r") or die("Unable to open file!");
+// open the insert sql file
+$insertFile = fopen("assets/data/insertProfessor.sql", "r") or die("Unable to open file!");
 
-    // make a select query to verify whether data is inserted or not
-    $selectQuery = "SELECT * FROM Professor WHERE College = 'Duke'";
-    $resultForSelect = mysqli_query($connection, $selectQuery);
+// make a select query to verify whether data is inserted or not
+$selectQuery = "SELECT * FROM Professor WHERE College = 'Duke'";
+$resultForSelect = mysqli_query($connection, $selectQuery);
 
-    // check select query return any rows, if there are no rows selected meaning there is no data
-    // so insert the data
-    // otherwise, data was already inserted
-    if (mysqli_num_rows($resultForSelect) == 0) {
-        while (!feof($insertFile)) {
-            $insertQuery = fgets($insertFile);
-            $resultForInsert = mysqli_query($connection, $insertQuery);
-            if (!$resultForInsert) {
-                fclose($insertFile);
-                die("Database query failed. " . mysqli_error($connection));
-            }
+// check select query return any rows, if there are no rows selected meaning there is no data
+// so insert the data
+// otherwise, data was already inserted
+if (mysqli_num_rows($resultForSelect) == 0) {
+    while (!feof($insertFile)) {
+        $insertQuery = fgets($insertFile);
+        $resultForInsert = mysqli_query($connection, $insertQuery);
+        if (!$resultForInsert) {
+            fclose($insertFile);
+            die("Database query failed. " . mysqli_error($connection));
         }
     }
-
-    // close the insert sql file
-    fclose($insertFile);
-
-    // close the connection
-    mysqli_close($connection);
 }
+
+// close the insert sql file
+fclose($insertFile);
+
+// close the connection
+mysqli_close($connection);
 
 ?>
 
