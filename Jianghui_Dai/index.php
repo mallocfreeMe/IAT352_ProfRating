@@ -47,6 +47,96 @@
 
 <body>
 
+<!-- Create JianghuiDai database -->
+<?php
+
+// Create connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$connection = mysqli_connect($servername, $username, $password);
+
+$databaseIsCreated = false;
+
+// Check connection
+if (!$connection) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// if the JianghuiDai database is not exist, create this database
+// learn how to check if it exists from https://stackoverflow.com/questions/838978/how-to-check-if-mysql-database-exists
+$sql = "CREATE DATABASE IF NOT EXISTS JianghuiDai";
+$result = mysqli_query($connection, $sql);
+if (!$result) {
+    die("Database query failed.");
+}
+
+// Close database connection
+mysqli_close($connection);
+
+$databaseIsCreated = true;
+?>
+
+<!-- Create Professor table and User table in JianghuiDai database-->
+<?php
+
+if ($databaseIsCreated) {
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "JianghuiDai";
+
+    // Create connection
+    $connection = mysqli_connect($servername, $username, $password, $dbname);
+
+    // Check connection
+    if (!$connection) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+
+    // sql to create User table
+    $sqlForUser = "CREATE TABLE IF NOT EXISTS User (
+                user_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                username VARCHAR(30) NOT NULL,
+                password VARCHAR(30) NOT NULL,
+                email VARCHAR(50))";
+
+    // sql to create Professor table
+    $sqlForProfessor = "CREATE TABLE IF NOT EXISTS Professor(
+                    Professor_id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                    NAME VARCHAR(35) NOT NULL,
+                    Overall_Quality NUMERIC(3, 1),
+                    Total_Ratings INTEGER NOT NULL,
+                    Hot VARCHAR(7) NOT NULL,
+                    Easiness NUMERIC(3, 1),
+                    Department VARCHAR(30) NOT NULL,
+                    College VARCHAR(9) NOT NULL)";
+
+    $resultForUser = mysqli_query($connection, $sqlForUser);
+    $resultForProfessor = mysqli_query($connection, $sqlForProfessor);
+
+    if (!$resultForUser || !$resultForProfessor) {
+        die("Database query failed.");
+    }
+
+    $file = fopen("assets/data/insertProfessor.sql", "r") or die("Unable to open file!");
+
+    while (!feof($file)) {
+        $insertQuery = fgets($file);
+        $resultForInsert = mysqli_query($connection, $insertQuery);
+
+        if (!$resultForInsert) {
+            fclose($file);
+            die("Database query failed. " . mysqli_error($connection));
+        }
+    }
+    fclose($file);
+
+    mysqli_close($connection);
+}
+
+?>
+
 <!-- nav -->
 <header>
 
@@ -100,7 +190,8 @@
             <br>
 
             <!-- registration form -->
-            <form action="processRegister.php" method="post" id="registrationForm" style="display: none" onsubmit="return validate();">
+            <form action="processRegister.php" method="post" id="registrationForm" style="display: none"
+                  onsubmit="return validate();">
 
                 <input type="email" name="email" placeholder="Email" id="registrationFormEmail">
                 <br>
