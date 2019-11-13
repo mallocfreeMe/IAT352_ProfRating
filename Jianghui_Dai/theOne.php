@@ -48,41 +48,56 @@
 
         <!-- Get the selected row by adding all the information to an array -->
         <?php
-        // get the name of the selected professor through GET method
-        @$nameEncode = $_GET['name'];
+        // get the Professor_id of the selected professor through GET method
+        @$idEncode = $_GET['Professor_id'];
 
         // create an empty array to store the row
         $array = array("");
 
-        // if encoded name is empty meaning users open this page directly without selecting any professor
+        // if encoded Professor_id is empty meaning users open this page directly without selecting any professor
         // it will cause fatal error, so the website decides to redirect the users to explore page and kill itself
-        if (!empty($nameEncode)) {
-            $name = urldecode($nameEncode);
+        if (!empty($idEncode)) {
+            $professor_id = urldecode($idEncode);
 
-            // open csv file, get the handler
-            $handler = fopen("assets/data/ratemyprofessors.csv", "r");
+            // Create a database connection
+            $dbhost = "localhost";
+            $dbuser = "root";
+            $dbpass = "";
+            $dbname = "Jianghui_Dai";
+            $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
-            // if handler is true
-            if ($handler) {
-
-                // iterate through the csv file
-                // find the line which contains the same name by using in_array function
-                // learnt in_array from https://www.php.net/manual/en/function.in-array.php
-                while (($line = fgetcsv($handler)) !== false) {
-                    $key = in_array($name, $line);
-
-                    // if it finds the line
-                    // set the array to the line
-                    if ($key) {
-                        $array = $line;
-                    }
-                }
-
-                // close handler
-                fclose($handler);
+            // Test if connection succeeded
+            if (mysqli_connect_errno()) {
+                // if connection failed, skip the rest of PHP code, and print an error
+                die("Database connection failed: " .
+                    mysqli_connect_error() .
+                    " (" . mysqli_connect_errno() . ")"
+                );
             }
 
+            // query to select the selected professor from the Professor table
+            $query = "SELECT * FROM Professor WHERE Professor_id = '$professor_id'";
+
+            $result = mysqli_query($connection, $query);
+
+            // if no rows are selected, query failed, print the error message
+            // go back to explore.php
+            if (mysqli_num_rows($result) == 0) {
+                header("Location: explore.php");
+                die("Database query failed. " . mysqli_error($connection));
+            } else {
+                // assign the assoc array to array variable
+                $array = mysqli_fetch_assoc($result);
+            }
+
+            // release returned data
+            mysqli_free_result($result);
+
+            // close the connection
+            mysqli_close($connection);
+
         } else {
+            mysqli_close($connection);
             header("Location: explore.php");
             die();
         }
@@ -96,13 +111,13 @@
             </div>
 
             <div class="grid-col-1of2" id="colOne">
-                <p>Professor: <b><?php echo $array[0]; ?></b></p><br>
-                <p>Department: <b><?php echo $array[5]; ?></b></p><br>
-                <p>College: <b><?php echo $array[6]; ?></b></p><br>
-                <p>Overall Quality: <b><?php echo $array[1]; ?></b></p><br>
-                <p>Total Ratings: <b><?php echo $array[2]; ?></b></p><br>
-                <p>Hotness: <b><?php echo $array[3]; ?></b></p><br>
-                <p>Easiness: <b><?php echo $array[4]; ?></b></p><br>
+                <p>Professor: <b><?php echo $array['NAME']; ?></b></p><br>
+                <p>Department: <b><?php echo $array['Overall_Quality']; ?></b></p><br>
+                <p>College: <b><?php echo $array['Total_Ratings']; ?></b></p><br>
+                <p>Overall Quality: <b><?php echo $array['Hot']; ?></b></p><br>
+                <p>Total Ratings: <b><?php echo $array['Easiness']; ?></b></p><br>
+                <p>Hotness: <b><?php echo $array['Department']; ?></b></p><br>
+                <p>Easiness: <b><?php echo $array['College']; ?></b></p><br>
             </div>
         </div>
 
@@ -116,8 +131,8 @@
         <!-- based on total ratings' number to generate comments -->
         <!-- array = 0 -> name, 1 -> overall quality, 2->total ratings, 3->hot, 4->easiness, 5->department, 6->college -->
         <?php
-        for ($i = 0; $i < $array[2]; $i++) {
-            echo "<textarea readonly>". "This is " . "#" . $i . " comment".
+        for ($i = 0; $i < $array['Total_Ratings']; $i++) {
+            echo "<textarea readonly>" . "This is " . "#" . $i . " comment" .
                 "</textarea><br>";
         }
         ?>

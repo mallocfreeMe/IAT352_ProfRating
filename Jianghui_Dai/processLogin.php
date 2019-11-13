@@ -39,8 +39,12 @@ if (!empty($email) || !empty($password)) {
 
     if (mysqli_num_rows($result) != 0) {
         // if selection success, go to personalize page
+        // append User_id to url
+        $array = mysqli_fetch_assoc($result);
+        $url = "Location: private/home.php?user_id=" . urlencode($array['user_id']);
+        mysqli_free_result($result);
         mysqli_close($connection);
-        header("Location: private/home.php");
+        header($url);
     } else {
         // if selection failed, leave the message
         mysqli_close($connection);

@@ -41,7 +41,17 @@ if (!empty($email) && !empty($password) && !empty($username)) {
 
     if ($result) {
         // if insert success, go to personalize page
-        header("Location: private/home.php");
+        // append the user_id to url
+        // write select query to find the user_id
+        $selectQuery = "SELECT User.user_id FROM User WHERE User.email = '$email' AND User.password = '$password'";
+        $selectResult = mysqli_query($connection, $selectQuery);
+        $array = mysqli_fetch_assoc($selectResult);
+        $url = "Location: private/home.php?user_id=" . urlencode($array['user_id']);
+
+        mysqli_free_result($selectResult);
+        mysqli_free_result($result);
+        mysqli_close($connection);
+        header($url);
     } else {
         // if insert failed, leave the message
         die("Database query failed. " . mysqli_error($connection));
