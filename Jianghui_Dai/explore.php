@@ -234,18 +234,23 @@
     <div class="grid-col-1of3"></div>
 
     <div class="grid-col-1of3" id="containerOfList">
-        <!-- table -->
         <?php
-        echo "<table>";
 
-        // learn how to load csv file in php from
-        // https://stackoverflow.com/questions/518795/dynamically-display-a-csv-file-as-an-html-table-on-a-web-page
-        $handler = fopen("assets/data/ratemyprofessors.csv", "r");
+        // Create a database connection
+        $dbhost = "localhost";
+        $dbuser = "root";
+        $dbpass = "";
+        $dbname = "Jianghui_Dai";
+        $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
-        // created a var to avoid print first line of data set
-        // create a index var for the each professor, and pass it to the theOne page through url
-        $countForFirstLine = 0;
-        $index = " ";
+        // Test if connection succeeded
+        if (mysqli_connect_errno()) {
+            // if connection failed, skip the rest of PHP code, and print an error
+            die("Database connection failed: " .
+                mysqli_connect_error() .
+                " (" . mysqli_connect_errno() . ")"
+            );
+        }
 
         // get the filter form's fields values through GET
         // filter form -> hotness, department, school, filterSubmit
@@ -254,124 +259,82 @@
         @$school = $_GET["school"];
         @$filterSubmit = $_GET["filterSubmit"];
 
-        // created a var as bool state
-        $filterResult = true;
-
-        // use fgetcsv() function to parse the csv file
-        while (($line = fgetcsv($handler)) !== false) {
-
-            // check if the filter form is submitted or not
-            if (!empty($filterSubmit)) {
-
-                // search hotness value in each line
-                // if it not find the hotness value from the line, set the filerResult to false meaning the line will be censored
-                if (!empty($hotness)) {
-                    $key = array_search($hotness, $line);
-                    if ($key == false) {
-                        $filterResult = false;
-                    }
-                }
-
-                // search department value in each line
-                // if it not find the department value from the line, set the filerResult to false meaning the line will be censored
-                if (!empty($department)) {
-                    $key = array_search($department, $line);
-                    if ($key == false) {
-                        $filterResult = false;
-                    }
-                }
-
-                // search school value in each line
-                // if it not find the school value from the line, set the filerResult to false meaning the line will be censored
-                if (!empty($school)) {
-                    $key = array_search($school, $line);
-                    if ($key == false) {
-                        $filterResult = false;
-                    }
-                }
-
-                // search the table head by searing the keywords "Department"
-                // if it finds the table head, print it without adding link
-                $searchForFirstLine = array_search("Department", $line);
-                if ($searchForFirstLine == true) {
-                    echo "<tr>";
-                    foreach ($line as $cell) {
-                        echo "<td>" . htmlspecialchars($cell) . "</td>";
-                    }
-                    echo "</tr>\n";
-                }
+        // perform query
+        // if filter from is submitted, append all the criteria to the query
+        // else select all professor from the Professor table
+        if (!empty($filterSubmit) && (!empty($hotness) || !empty($department) || !empty($school))) {
+            if (!empty($hotness) && empty($department) && empty($school)) {
+                $query = "SELECT * FROM Professor WHERE Professor.Hot = '$hotness'";
+            } else if (empty($hotness) && !empty($department) && empty($school)) {
+                $query = "SELECT * FROM Professor WHERE Professor.Department = '$department'";
+            } else if (empty($hotness) && empty($department) && !empty($school)) {
+                $query = "SELECT * FROM Professor WHERE Professor.College = '$school'";
+            } else if (!empty($hotness) && !empty($department) && empty($school)) {
+                $query = "SELECT * FROM Professor WHERE Professor.Hot = '$hotness' AND Professor.Department = '$department'";
+            } else if (!empty($hotness) && empty($department) && !empty($school)) {
+                $query = "SELECT * FROM Professor WHERE Professor.Hot = '$hotness' AND Professor.College = '$school'";
+            } else if (empty($hotness) && !empty($department) && !empty($school)) {
+                $query = "SELECT * FROM Professor WHERE Professor.College = '$school' AND Professor.Department = '$department'";
+            } else if (!empty($hotness) && !empty($department) && !empty($school)) {
+                $query = "SELECT * FROM Professor WHERE Professor.Hot = '$hotness' AND Professor.Department = '$department' AND Professor.College = '$school'";
             }
-
-            // when filterResult equals to false meaning this line need to be printed
-            if ($filterResult != false) {
-                echo "<tr>";
-
-                // count is a moving pointer I use
-                $count = 0;
-
-                // create these vars for filter link
-                $countForFilterIndex = 0;
-                $filterIndex = " ";
-
-                // iterate though the array - $line
-                foreach ($line as $cell) {
-                    // length: 6 cells
-
-                    // if filter form is not submitted yet
-                    if (empty($filterSubmit)) {
-                        // print each $cell from the line, and add link to the first cell which is professor's name
-                        // the link is to theOne.php page
-                        // the URI followed with professor's name
-                        if ($count == 0 && $countForFirstLine == 1) {
-                            $index = $cell;
-                            // encode the name by using urlendcode function
-                            // which I learnt from https://www.php.net/manual/en/function.urlencode.php
-                            echo "<td><a href='theOne.php?name="
-                                . urlencode($index)
-                                . "'>"
-                                . htmlspecialchars($cell)
-                                . "</a></td>";
-                        } else {
-                            // else print the table head without adding the link
-                            echo "<td>" . htmlspecialchars($cell) . "</td>";
-                        }
-                    } else {
-                        // if filter form is submitted
-                        // echo all the cell, add hyper link to the first cell which professor's name
-                        if ($countForFilterIndex == 0) {
-                            $filterIndex = $cell;
-                            echo "<td><a href='theOne.php?name="
-                                . urlencode($filterIndex)
-                                . "'>"
-                                . htmlspecialchars($cell)
-                                . "</a></td>";
-                        } else {
-                            // print other cells without links
-                            echo "<td>" . htmlspecialchars($cell) . "</td>";
-                        }
-
-                        $countForFilterIndex++;
-                    }
-
-                    if ($count <= 5) {
-                        $count++;
-                    } else {
-                        $count = 0;
-                    }
-                }
-
-                if ($countForFirstLine == 0) {
-                    $countForFirstLine++;
-                }
-
-                echo "</tr>\n";
-            }
-
-            $filterResult = true;
+        } else {
+            $query = "SELECT * FROM Professor";
         }
 
-        fclose($handler);
+        $result = mysqli_query($connection, $query);
+
+        // if query failed meaning there is no data meet the selection, create a bool for this statue
+        $queryFailed = false;
+
+        // if no rows are selected, query failed, print the error message
+        if (mysqli_num_rows($result) == 0) {
+            // if selection failed, leave the message
+            $queryFailed = true;
+        } else {
+            $queryFailed = false;
+        }
+
+        // print the table
+        echo "<table>";
+
+        // print the table head
+        echo "<tr><td>ID</td><td>Name</td><td>Overall Quality</td><td>Total Ratings</td><td>Hot</td><td>Easiness</td><td>Department</td><td>College</td></tr>";
+
+        // if query failed, no selections meet the criteria, print the message
+        if ($queryFailed) {
+            echo "<tr><td colspan=\"8\">No available data for your selection, please modify your filter criteria.</td></tr>";
+        }
+
+        // fetch the assoc array
+        while ($row = mysqli_fetch_assoc($result)) {
+            $index = 0;
+            echo "<tr>";
+
+            // print each value
+            foreach ($row as $value) {
+                if ($index == 0) {
+                    echo "<td><a href='theOne.php?Professor_id="
+                        . urlencode(stripcslashes($value))
+                        . "'>"
+                        . stripcslashes($value)
+                        . "</a></td>";
+                } else {
+                    echo "<td>"
+                        . stripcslashes($value)
+                        . "</td>";
+                }
+                $index++;
+            }
+            echo "</tr>";
+        }
         echo "</table>";
+
+        // release returned data
+        mysqli_free_result($result);
+
+        // close the connection
+        mysqli_close($connection);
         ?>
     </div>
 
