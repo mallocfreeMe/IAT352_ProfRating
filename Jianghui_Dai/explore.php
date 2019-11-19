@@ -62,89 +62,53 @@
 
                         <!-- use php to find all the department -->
                         <?php
-                        // learn how to load csv file in php from
-                        // https://stackoverflow.com/questions/518795/dynamically-display-a-csv-file-as-an-html-table-on-a-web-page
-                        $handler = fopen("assets/data/ratemyprofessors.csv", "r");
 
-                        // created a var to avoid print first line of data set
-                        $countForFirstLine = 0;
+                        // Create a database connection
+                        $dbhost = "localhost";
+                        $dbuser = "root";
+                        $dbpass = "";
+                        $dbname = "Jianghui_Dai";
+                        $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
-                        // created an array for avoiding repeating the same string
-                        $noRepeatWordArray = array("test");
-
-                        // use fgetcsv() function to parse the csv file
-                        while (($line = fgetcsv($handler)) !== false) {
-                            // count is a moving pointer I use
-                            $count = 0;
-
-                            // length: 6 cells
-                            foreach ($line as $cell) {
-                                // when count equals to 5, it reaches department column. Print the cell, count move one cell forward
-                                // when count equals to 6, it reaches the end of the column, set to 0, ready for next row
-                                // otherwise count++ to iterate through the column
-                                if ($count == 5 && $countForFirstLine == 1) {
-
-                                    // create a bool as state checker
-                                    $repeat = false;
-
-                                    foreach ($noRepeatWordArray as $word) {
-                                        // use strcmp to comparing the $word and every $cell from the array
-                                        // it returns 0 means two string are equal
-                                        // set $repeat to true
-                                        // break the loop
-                                        // learnt from https://www.geeksforgeeks.org/php-strcmp-function/
-                                        $filterResult = strcmp($word, htmlspecialchars($cell));
-                                        if ($filterResult == 0) {
-                                            $repeat = true;
-                                            break;
-                                        }
-                                    }
-
-                                    // if the word is not repeated from the array
-                                    // use array_push to add the words to the array
-                                    if ($repeat == false) {
-                                        array_push($noRepeatWordArray, htmlspecialchars($cell));
-                                    }
-
-                                    $count++;
-                                } else if ($count == 6) {
-                                    $count = 0;
-                                } else {
-                                    $count++;
-                                }
-                            }
-
-                            // var to print first line of the data set
-                            if ($countForFirstLine == 0) {
-                                $countForFirstLine++;
-                            }
-                        }
-                        fclose($handler);
-
-                        // remove 'test' word I added in the beginning when I created the $noRepeatWordArray
-                        if (($key = array_search('test', $noRepeatWordArray)) !== false) {
-                            unset($noRepeatWordArray[$key]);
+                        // Test if connection succeeded
+                        if (mysqli_connect_errno()) {
+                            // if connection failed, skip the rest of PHP code, and print an error
+                            die("Database connection failed: " .
+                                mysqli_connect_error() .
+                                " (" . mysqli_connect_errno() . ")"
+                            );
                         }
 
-                        // use asort to sort the array alphabetically
-                        asort($noRepeatWordArray);
+                        // write distinct select query
+                        $query = "SELECT DISTINCT Department FROM Professor ORDER BY Department ASC";
+
+                        // get the return data
+                        $result = mysqli_query($connection, $query);
 
                         // print all the department from the array
                         @$department = $_GET["department"];
-                        foreach ($noRepeatWordArray as $cell) {
-                            // if there is a non-empty department value from URI
-                            // echo a selected input
-                            // else echo a regular input
-                            if (!empty($department) && $cell === $department) {
-                                echo "<option value=\"" . htmlspecialchars($cell) . "\"" . "selected" . ">" .
-                                    htmlspecialchars($cell) .
-                                    "</option>";
-                            } else {
-                                echo "<option value=\"" . htmlspecialchars($cell) . "\">" .
-                                    htmlspecialchars($cell) .
-                                    "</option>";
+
+                        if (mysqli_num_rows($result) > 0) {
+                            // output data of each row
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                // if there is a non-empty department value from URI
+                                // echo a selected input
+                                // else echo a regular input
+                                if (!empty($department) && $row['Department'] === $department) {
+                                    echo "<option value=\"" . htmlspecialchars($row['Department']) . "\"" . "selected" . ">" .
+                                        htmlspecialchars($row['Department']) .
+                                        "</option>";
+                                } else {
+                                    echo "<option value=\"" . htmlspecialchars($row['Department']) . "\">" .
+                                        htmlspecialchars($row['Department']) .
+                                        "</option>";
+                                }
                             }
                         }
+
+                        // release returned data
+                        mysqli_free_result($result);
+
                         ?>
 
                     </select>
@@ -156,51 +120,34 @@
                         <!-- use php to find all the school name from the data set by using the same method I used on the above
                         for finding all the departments -->
                         <?php
-                        $handler = fopen("assets/data/ratemyprofessors.csv", "r");
 
-                        // created a var to avoid print first line of data set
-                        $countForFirstLine = 0;
+                        @$school = $_GET["school"];
 
-                        // created a var for avoiding repeating the same string
-                        $noRepeatWord = "";
+                        // write distinct select query, order by ascending order
+                        $query = "SELECT DISTINCT College FROM Professor ORDER BY College ASC";
 
-                        // use fgetcsv() function to parse the csv file
-                        while (($line = fgetcsv($handler)) !== false) {
-                            // count is a moving pointer I use
-                            $count = 0;
+                        // get the return data
+                        $result = mysqli_query($connection, $query);
 
-                            // length: 6 cells
-                            foreach ($line as $cell) {
-                                // when count equals to 6, print the cell -> school name
-                                // and it also reaches the end of the column, set to 0, ready for next row
-                                // otherwise count++ to iterate through the column
-                                if ($count == 6 && $countForFirstLine == 1) {
-                                    if (strcmp($noRepeatWord, htmlspecialchars($cell)) !== 0) {
-
-                                        @$school = $_GET["school"];
-
-                                        if (!empty($school) && $cell === $school) {
-                                            echo "<option value=\"" . htmlspecialchars($cell) . "\"" . "selected" . ">" .
-                                                htmlspecialchars($cell) .
-                                                "</option>";
-                                        } else {
-                                            echo "<option value=\"" . htmlspecialchars($cell) . "\">" .
-                                                htmlspecialchars($cell) .
-                                                "</option>";
-                                        }
-                                        $noRepeatWord = htmlspecialchars($cell);
-                                    }
-                                    $count = 0;
+                        // fetch the data
+                        if (mysqli_num_rows($result) > 0) {
+                            // output data of each row
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                if (!empty($school) && $row["College"] === $school) {
+                                    echo "<option value=\"" . htmlspecialchars($row["College"]) . "\"" . "selected" . ">" .
+                                        htmlspecialchars($row["College"]) .
+                                        "</option>";
                                 } else {
-                                    $count++;
+                                    echo "<option value=\"" . htmlspecialchars($row["College"]) . "\">" .
+                                        htmlspecialchars($row["College"]) .
+                                        "</option>";
                                 }
                             }
-
-                            if ($countForFirstLine == 0) {
-                                $countForFirstLine++;
-                            }
                         }
-                        fclose($handler);
+
+                        // release returned data
+                        mysqli_free_result($result);
+
                         ?>
                     </select>
 
@@ -235,22 +182,6 @@
 
     <div class="grid-col-1of3" id="containerOfList">
         <?php
-
-        // Create a database connection
-        $dbhost = "localhost";
-        $dbuser = "root";
-        $dbpass = "";
-        $dbname = "Jianghui_Dai";
-        $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-
-        // Test if connection succeeded
-        if (mysqli_connect_errno()) {
-            // if connection failed, skip the rest of PHP code, and print an error
-            die("Database connection failed: " .
-                mysqli_connect_error() .
-                " (" . mysqli_connect_errno() . ")"
-            );
-        }
 
         // get the filter form's fields values through GET
         // filter form -> hotness, department, school, filterSubmit
@@ -335,6 +266,7 @@
 
         // close the connection
         mysqli_close($connection);
+
         ?>
     </div>
 
