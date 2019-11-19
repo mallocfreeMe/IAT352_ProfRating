@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="css/publicNavigationBar.css">
     <link rel="stylesheet" href="css/forIndex.css">
 
+    <!-- import jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
     <!-- raw js to animate the form -->
     <script type="text/javascript">
         // learn how to show and hide form from https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp
@@ -152,10 +155,51 @@ mysqli_close($connection);
 
             <!-- search bar with its icon -->
             <div class="grid-col-1of3">
+
                 <a href="explore.php">
                     <img src="assets/icons/professor.png" class="searchIcon">
                 </a>
-                <input type="text" placeholder="Search Prof" size="50" id="searchBar">
+
+                <form id="test" autocomplete="off">
+                    <input type="text" placeholder="Search Prof" size="50" id="searchBar"
+                           onkeyup="showHint(this.value)">
+                    <div id="liveSearch"></div>
+                </form>
+
+                <script>
+
+                    function showHint(str) {
+
+                        if (str.length == 0) {
+                            document.getElementById("liveSearch").innerHTML = "";
+                            return;
+                        } else {
+                            var xmlhttp = new XMLHttpRequest();
+                            xmlhttp.onreadystatechange = function () {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    let arr = this.responseText.split(",");
+
+                                    if (arr.length >= 5) {
+                                        for (let i = 0; i < 5; i++) {
+                                            document.getElementById("liveSearch").innerHTML = '<form>' +
+                                                '<input type="text" value="' + arr[0] + '"> ' +
+                                                '<input type="text" value="' + arr[1] + '"> ' +
+                                                '<input type="text" value="' + arr[2] + '"> ' +
+                                                '<input type="text" value="' + arr[3] + '"> ' +
+                                                '<input type="text" value="' + arr[4] + '">' + '</form>';
+                                        }
+                                    }
+
+                                    if (arr.length == 1) {
+                                        document.getElementById("liveSearch").innerHTML = this.responseText;
+                                    }
+                                }
+                            };
+                            xmlhttp.open("GET", "liveSearch.php?q=" + str, true);
+                            xmlhttp.send();
+                        }
+                    }
+                </script>
             </div>
 
             <div class="grid-col-1of3"></div>
