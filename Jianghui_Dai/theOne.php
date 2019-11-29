@@ -71,7 +71,7 @@ if (!empty($_SESSION['user_id'])) {
                     echo "<li><a href=\"index.php\">Log Out</a></li>";
                     echo "<li><a href=\"private/settings.php\">Settings</a></li>";
                     echo "<li><a href=\"explore.php\">Home</a></li>";
-                    echo "<li><a href=>welcome back, " . $username . "</a></li>";
+                    echo "<li><a href=>Welcome back, " . $username . "</a></li>";
                     echo "</ul>";
                 } else {
                     echo "<button id=\"sideLoginButton\" onclick=\"location.href='login.php'\">Log in</button>

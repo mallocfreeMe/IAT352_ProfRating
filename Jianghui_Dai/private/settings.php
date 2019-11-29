@@ -80,7 +80,7 @@ mysqli_close($connection);
                 <li><a href="../index.php">Log Out</a></li>
                 <li><a href="personalize.php"">Personalization</a></li>
                 <li><a href="../explore.php"">Home</a></li>
-                <?php echo "<li><a href=>welcome back, " . $username . "</a></li>"; ?>
+                <?php echo "<li><a href=>Welcome back, " . $username . "</a></li>"; ?>
             </ul>
         </div>
 
@@ -100,51 +100,6 @@ mysqli_close($connection);
         echo "<td>" . $array['password'] . "</td></tr>";
         echo "</table>";
         ?>
-
-        <!-- Change your password-->
-        <h2>Change your password</h2>
-
-        <form action="settings.php" method="post">
-            New Password: <input type="text" name="newPassword">
-            <input type="submit" value="submit">
-        </form>
-
-        <?php
-        $dbhost = "localhost";
-        $dbuser = "root";
-        $dbpass = "";
-        $dbname = "Jianghui_Dai";
-        $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-
-        // Test if connection succeeded
-        if (mysqli_connect_errno()) {
-            // if connection failed, skip the rest of PHP code, and print an error
-            die("Database connection failed: " .
-                mysqli_connect_error() .
-                " (" . mysqli_connect_errno() . ")"
-            );
-        }
-
-        // update the password
-        @$newPassword = trim($_POST['newPassword']);
-
-        if (!empty($newPassword)) {
-            $sql = "UPDATE user SET password = '$newPassword' WHERE user_id = '$user_id'";
-
-            $result = mysqli_query($connection, $sql);
-
-            if (!$result) {
-                // if query failed, leave the message
-                mysqli_close($connection);
-                die("Database query failed. " . mysqli_error($connection));
-            }
-
-            // if query failed, leave the message
-            mysqli_close($connection);
-        }
-
-        ?>
-
     </div>
 
     <div class="grid-col-1of3"></div>

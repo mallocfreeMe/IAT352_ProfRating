@@ -55,6 +55,37 @@ if (!empty($_SESSION['user_id'])) {
     <link rel="stylesheet" href="css/grid.css">
     <link rel="stylesheet" href="css/publicNavigationBar.css">
     <link rel="stylesheet" href="css/forExplore.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        // learned from https://stackoverflow.com/questions/19605078/how-to-use-pagination-on-html-tables
+        $(document).ready(function () {
+            $('#professorTable').after('<div id="nav" style="margin-top: 1em; font-size:1.5em;"></div>');
+            var rowsShown = 10;
+            var rowsTotal = $('#professorTable tbody tr').length;
+            var numPages = rowsTotal / rowsShown;
+            for (i = 0; i < numPages; i++) {
+                var pageNum = i + 1;
+                $('#nav').append('<a href="#" rel="' + i + '">' + pageNum + '</a> ');
+            }
+
+            // hide the page if the content unit less than 1
+            if (numPages <= 1) {
+                $('#nav').hide();
+            }
+            $('#professorTable tbody tr').hide();
+            $('#professorTable tbody tr').slice(0, rowsShown).show();
+            $('#nav a:first').addClass('active');
+            $('#nav a').bind('click', function () {
+
+                $('#nav a').removeClass('active');
+                $(this).addClass('active');
+                var currPage = $(this).attr('rel');
+                var startItem = currPage * rowsShown;
+                var endItem = startItem + rowsShown;
+                $('#professorTable tbody tr').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({opacity: 1}, 300);
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -66,6 +97,7 @@ if (!empty($_SESSION['user_id'])) {
 
             <!-- search bar -->
             <div class="grid-col-1of3">
+                <div></div>
                 <input type="text" placeholder="Search Prof" size="50" id="searchBar">
             </div>
 
@@ -73,8 +105,7 @@ if (!empty($_SESSION['user_id'])) {
             <!-- filter section include one radio button and two selection inputs-->
             <div class="grid-col-1of3" id="filterCol">
 
-                <!-- filter the page by submitting the page to itself with the right URI-->
-                <form action="explore.php" method="get">
+                <form action="explore.php" method="get" id="filterForm">
 
                     <!-- radio button -->
                     <?php
@@ -111,7 +142,7 @@ if (!empty($_SESSION['user_id'])) {
                     ?>
 
                     <!-- select input filter section for department -->
-                    <select name="department">
+                    <select name="department" id="department">
                         <!-- learnt how to add placeholder for select input from
                         https://stackoverflow.com/questions/5805059/how-do-i-make-a-placeholder-for-a-select-box-->
                         <option value="" disabled selected>Select The Department</option>
@@ -176,7 +207,7 @@ if (!empty($_SESSION['user_id'])) {
                     </select>
 
                     <!-- select input filter section for school -->
-                    <select name="school">
+                    <select name="school" id="college">
                         <option value="" disabled selected>Select The College</option>
 
                         <!-- use php to find all the school name from the data set by using the same method I used on the above
@@ -221,7 +252,7 @@ if (!empty($_SESSION['user_id'])) {
                         ?>
                     </select>
 
-                    <input type="submit" name="filterSubmit" value="Filter">
+                    <input type="submit" name="filterSubmit" value="sumbit">
 
                     <!-- clean the filter result by simply redirect to explore.php, the previous URI was removed -->
                     <a href="explore.php" id="filterCleanButton">Restart</a>
@@ -237,7 +268,7 @@ if (!empty($_SESSION['user_id'])) {
                     echo "<li><a href=\"index.php\">Log Out</a></li>";
                     echo "<li><a href=\"private/personalize.php\">Personalization</a></li>";
                     echo "<li><a href=\"private/settings.php\">Settings</a></li>";
-                    echo "<li><a href=>welcome back, " . $username . "</a></li>";
+                    echo "<li><a href=>Welcome back, " . $username . "</a></li>";
                     echo "</ul>";
                 } else {
                     echo "<button id=\"sideLoginButton\" onclick=\"location.href='login.php'\">Log in</button>
@@ -258,7 +289,7 @@ if (!empty($_SESSION['user_id'])) {
 
 <div class="grid">
 
-    <div class="grid-col-1of3"></div>
+    <div class="grid-col-1of3" id="server-results"></div>
 
     <div class="grid-col-1of3" id="containerOfList">
         <?php
@@ -269,13 +300,6 @@ if (!empty($_SESSION['user_id'])) {
         @$department = $_GET["department"];
         @$school = $_GET["school"];
         @$filterSubmit = $_GET["filterSubmit"];
-
-        //        if (empty($filterSubmit)) {
-        //            $one = $array['Hot'];
-        //            $two = $array['Department'];
-        //            $three = $array['College'];
-        //            $query = "SELECT * FROM Professor WHERE Professor.Hot = '$one' AND Professor.Department = '$two' AND Professor.College = '$three'";
-        //        }
 
         // perform query
         // if filter from is submitted, append all the criteria to the query
@@ -317,7 +341,7 @@ if (!empty($_SESSION['user_id'])) {
         }
 
         // print the table
-        echo "<table id=\"example\"";
+        echo "<table id=\"professorTable\"";
 
         // print the table head
         echo "<tr><td>ID</td><td>Name</td><td>Overall Quality</td><td>Total Ratings</td><td>Hot</td><td>Easiness</td><td>Department</td><td>College</td></tr>";
