@@ -321,10 +321,14 @@ if (!empty($_SESSION['user_id'])) {
                 $query = "SELECT * FROM Professor WHERE Professor.Hot = '$hotness' AND Professor.Department = '$department' AND Professor.College = '$school'";
             }
         } else {
-            $one = $array['Hot'];
-            $two = $array['Department'];
-            $three = $array['College'];
-            $query = "SELECT * FROM Professor WHERE Professor.Hot = '$one' AND Professor.Department = '$two' AND Professor.College = '$three'";
+            if (isset($array)) {
+                $one = $array['Hot'];
+                $two = $array['Department'];
+                $three = $array['College'];
+                $query = "SELECT * FROM Professor WHERE Professor.Hot = '$one' AND Professor.Department = '$two' AND Professor.College = '$three'";
+            } else {
+                $query = "SELECT * FROM Professor";
+            }
         }
 
         $result = mysqli_query($connection, $query);
