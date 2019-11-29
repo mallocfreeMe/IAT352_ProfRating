@@ -153,19 +153,19 @@ if (isset($school) && isset($department) && isset($hotness)) {
                 // get the return data
                 $result = mysqli_query($connection, $query);
 
-                if (!empty($array['College'])) {
-                    echo "<option value=\"" . htmlspecialchars($$array['School']) . "\"" . "selected" . ">" .
-                        htmlspecialchars($array['College']) .
-                        "</option>";
-                }
-
                 // fetch the data
                 if (mysqli_num_rows($result) > 0) {
                     // output data of each row
                     while ($row = mysqli_fetch_assoc($result)) {
-                        echo "<option value=\"" . htmlspecialchars($row["College"]) . "\">" .
-                            htmlspecialchars($row["College"]) .
-                            "</option>";
+                        if (!empty($array['College']) && $row['College'] === $array['College']) {
+                            echo "<option value=\"" . htmlspecialchars($$array['School']) . "\"" . "selected" . ">" .
+                                htmlspecialchars($array['College']) .
+                                "</option>";
+                        } else {
+                            echo "<option value=\"" . htmlspecialchars($row["College"]) . "\">" .
+                                htmlspecialchars($row["College"]) .
+                                "</option>";
+                        }
                     }
                 }
 
@@ -186,18 +186,19 @@ if (isset($school) && isset($department) && isset($hotness)) {
                 // get the return data
                 $result = mysqli_query($connection, $query);
 
-                if (!empty($array['Department'])) {
-                    echo "<option value=\"" . htmlspecialchars($array['Department']) . "\"" . "selected" . ">" .
-                        htmlspecialchars($array['Department']) .
-                        "</option>";
-                }
 
                 if (mysqli_num_rows($result) > 0) {
                     // output data of each row
                     while ($row = mysqli_fetch_assoc($result)) {
-                        echo "<option value=\"" . htmlspecialchars($row['Department']) . "\">" .
-                            htmlspecialchars($row['Department']) .
-                            "</option>";
+                        if (!empty($array['Department']) && $row['Department'] === $array['Department']) {
+                            echo "<option value=\"" . htmlspecialchars($row['Department']) . "\"" . "selected" . ">" .
+                                htmlspecialchars($row['Department']) .
+                                "</option>";
+                        } else {
+                            echo "<option value=\"" . htmlspecialchars($row['Department']) . "\">" .
+                                htmlspecialchars($row['Department']) .
+                                "</option>";
+                        }
                     }
                 }
 

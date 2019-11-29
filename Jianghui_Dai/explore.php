@@ -144,26 +144,26 @@ if (!empty($_SESSION['user_id'])) {
                         // print all the department from the array
                         @$department = $_GET["department"];
 
-                        if(!empty($array['Department'])) {
-                            echo "<option value=\"" . htmlspecialchars($array['Department']) . "\"" . "selected" . ">" .
-                                htmlspecialchars($array['Department']) .
-                                "</option>";
-                        }
+                        $bool = false;
 
                         if (mysqli_num_rows($result) > 0) {
                             // output data of each row
                             while ($row = mysqli_fetch_assoc($result)) {
-                                // if there is a non-empty department value from URI
-                                // echo a selected input
-                                // else echo a regular input
                                 if (!empty($department) && $row['Department'] === $department) {
                                     echo "<option value=\"" . htmlspecialchars($row['Department']) . "\"" . "selected" . ">" .
                                         htmlspecialchars($row['Department']) .
                                         "</option>";
+                                    $bool = true;
                                 } else {
-                                    echo "<option value=\"" . htmlspecialchars($row['Department']) . "\">" .
-                                        htmlspecialchars($row['Department']) .
-                                        "</option>";
+                                    if ($bool == false && $row["Department"] === $array['Department']) {
+                                        echo "<option value=\"" . htmlspecialchars($row['Department']) . "\"" . "selected" . ">" .
+                                            htmlspecialchars($row['Department']) .
+                                            "</option>";
+                                    } else {
+                                        echo "<option value=\"" . htmlspecialchars($row['Department']) . "\">" .
+                                            htmlspecialchars($row['Department']) .
+                                            "</option>";
+                                    }
                                 }
                             }
                         }
@@ -191,13 +191,8 @@ if (!empty($_SESSION['user_id'])) {
                         // get the return data
                         $result = mysqli_query($connection, $query);
 
-                        if(!empty($array['College'])) {
-                            echo "<option value=\"" . htmlspecialchars($$array['School']) . "\"" . "selected" . ">" .
-                                htmlspecialchars($array['College']) .
-                                "</option>";
-                        }
-
                         // fetch the data
+                        $test = false;
                         if (mysqli_num_rows($result) > 0) {
                             // output data of each row
                             while ($row = mysqli_fetch_assoc($result)) {
@@ -205,10 +200,17 @@ if (!empty($_SESSION['user_id'])) {
                                     echo "<option value=\"" . htmlspecialchars($row["College"]) . "\"" . "selected" . ">" .
                                         htmlspecialchars($row["College"]) .
                                         "</option>";
+                                    $test = true;
                                 } else {
-                                    echo "<option value=\"" . htmlspecialchars($row["College"]) . "\">" .
-                                        htmlspecialchars($row["College"]) .
-                                        "</option>";
+                                    if ($test == false && $row["College"] === $array['College']) {
+                                        echo "<option value=\"" . htmlspecialchars($row["College"]) . "\"" . "selected" . ">" .
+                                            htmlspecialchars($row["College"]) .
+                                            "</option>";
+                                    } else {
+                                        echo "<option value=\"" . htmlspecialchars($row["College"]) . "\">" .
+                                            htmlspecialchars($row["College"]) .
+                                            "</option>";
+                                    }
                                 }
                             }
                         }
@@ -268,6 +270,13 @@ if (!empty($_SESSION['user_id'])) {
         @$school = $_GET["school"];
         @$filterSubmit = $_GET["filterSubmit"];
 
+        //        if (empty($filterSubmit)) {
+        //            $one = $array['Hot'];
+        //            $two = $array['Department'];
+        //            $three = $array['College'];
+        //            $query = "SELECT * FROM Professor WHERE Professor.Hot = '$one' AND Professor.Department = '$two' AND Professor.College = '$three'";
+        //        }
+
         // perform query
         // if filter from is submitted, append all the criteria to the query
         // else select all professor from the Professor table
@@ -288,7 +297,10 @@ if (!empty($_SESSION['user_id'])) {
                 $query = "SELECT * FROM Professor WHERE Professor.Hot = '$hotness' AND Professor.Department = '$department' AND Professor.College = '$school'";
             }
         } else {
-            $query = "SELECT * FROM Professor";
+            $one = $array['Hot'];
+            $two = $array['Department'];
+            $three = $array['College'];
+            $query = "SELECT * FROM Professor WHERE Professor.Hot = '$one' AND Professor.Department = '$two' AND Professor.College = '$three'";
         }
 
         $result = mysqli_query($connection, $query);
