@@ -111,10 +111,19 @@ $sqlForProfessor = "CREATE TABLE IF NOT EXISTS Professor(
                     Department VARCHAR(30) NOT NULL,
                     College VARCHAR(9) NOT NULL)";
 
+
+// sql to create Preference table
+$sqlForPreference = "CREATE TABLE IF NOT EXISTS Preference (
+                user_id INT(6) PRIMARY KEY,
+                College VARCHAR(9) NOT NULL,
+                Department VARCHAR(30) NOT NULL,
+                Hot VARCHAR(7) NOT NULL)";
+
 $resultForUser = mysqli_query($connection, $sqlForUser);
 $resultForProfessor = mysqli_query($connection, $sqlForProfessor);
+$resultForPreference = mysqli_query($connection, $sqlForPreference );
 
-if (!$resultForUser || !$resultForProfessor) {
+if (!$resultForUser || !$resultForProfessor || !$resultForPreference ) {
     die("Database query failed.");
 }
 
@@ -293,11 +302,6 @@ mysqli_close($connection);
     <div class="grid"></div>
 </section>
 
-
-<!-- Third Page -->
-<section class="thirdPage">
-    <div class="grid"></div>
-</section>
 
 </body>
 

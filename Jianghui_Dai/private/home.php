@@ -1,16 +1,18 @@
-<html lang="en">
-
 <?php
+// start a session
+session_start();
 
-@$user_id = trim($_GET["user_id"]);
-
-// if user_id is empty meaning user enter here without log in
-// redirect user back to index.html
-if (empty($user_id)) {
-    header("Location: ../login.php");
+// check whether the session has the saved user_id or not
+// if it's not
+if (empty($_SESSION['user_id'])) {
+    // destroy the session
+    session_destroy();
+    // redirect to home page
+    header("Location: ../index.php");
     die();
 }
 
+// Create a database connection
 $dbhost = "localhost";
 $dbuser = "root";
 $dbpass = "";
@@ -26,21 +28,17 @@ if (mysqli_connect_errno()) {
     );
 }
 
-// query to select user_id from the User table
+// query to select user_id (from session) from the User table
+$user_id = $_SESSION['user_id'];
 $query = "SELECT User.username FROM User WHERE User.user_id ='$user_id'";
-
 $result = mysqli_query($connection, $query);
-
 $array = mysqli_fetch_assoc($result);
-
 $username = $array['username'];
-
 // free the returned data
 mysqli_free_result($result);
-
-// Close database connection
-mysqli_close($connection);
 ?>
+
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -71,13 +69,8 @@ mysqli_close($connection);
             <div class="grid-col-1of3">
                 <ul>
                     <li><a href="../index.php">Log Out</a></li>
-                    <?php
-                    // encode user_id to url
-                    $url = "settings.php?user_id=" . $user_id;
-                    echo "<li><a href=\"". $url ."\">Settings</a></li>";
-
-                    echo "<li><a href=>welcome back, " . $username . "</a></li>";
-                    ?>
+                    <li><a href=\"". $url ."\">Settings</a></li>
+                    <?php echo "<li><a href=>welcome back, " . $username . "</a></li>"; ?>
                 </ul>
             </div>
 
@@ -93,22 +86,6 @@ mysqli_close($connection);
     <div class="grid-col-1of3">
 
         <?php
-        // Create a database connection
-        $dbhost = "localhost";
-        $dbuser = "root";
-        $dbpass = "";
-        $dbname = "Jianghui_Dai";
-        $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-
-        // Test if connection succeeded
-        if (mysqli_connect_errno()) {
-            // if connection failed, skip the rest of PHP code, and print an error
-            die("Database connection failed: " .
-                mysqli_connect_error() .
-                " (" . mysqli_connect_errno() . ")"
-            );
-        }
-
         $query = "SELECT * FROM Professor WHERE College='UChicago'";
 
         $result = mysqli_query($connection, $query);

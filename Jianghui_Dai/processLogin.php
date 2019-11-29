@@ -1,8 +1,8 @@
-<html lang="en">
-<body>
-
 <!-- This is the page I used to check log in form -->
 <?php
+// start a session
+session_start();
+
 // check and filter data coming from the user
 @$email = trim($_POST["email"]);
 @$password = trim($_POST["password"]);
@@ -39,25 +39,25 @@ if (!empty($email) || !empty($password)) {
 
     if (mysqli_num_rows($result) != 0) {
         // if selection success, go to personalize page
-        // append User_id to url
+        // add user_id to session
         $array = mysqli_fetch_assoc($result);
-        $url = "Location: private/home.php?user_id=" . urlencode($array['user_id']);
+        $_SESSION["user_id"] = $array["user_id"];
+
         mysqli_free_result($result);
         mysqli_close($connection);
-        header($url);
+        header("Location: private/home.php");
     } else {
         // if selection failed, leave the message
+        session_destroy();
         mysqli_close($connection);
         header("Location: login.php");
         die("Database query failed. " . mysqli_error($connection));
     }
 
 } else {
+    session_destroy();
     header("Location: login.php");
     die();
 }
 
 ?>
-
-</body>
-</html>

@@ -1,3 +1,19 @@
+<?php
+// start a session
+session_start();
+
+// check whether the session has the saved user_id or not
+if (!empty($_SESSION['user_id'])) {
+    echo $_SESSION['user_id'];
+} else {
+    // destroy the session
+    session_destroy();
+    // redirect to home page
+    header("Location: ../index.php");
+    die();
+}
+?>
+
 <html lang="en">
 
 <?php

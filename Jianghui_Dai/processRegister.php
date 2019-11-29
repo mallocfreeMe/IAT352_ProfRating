@@ -1,8 +1,14 @@
+<?php
+// start a session
+session_start();
+?>
+
 <html lang="en">
 <body>
 
 <!-- This is the page I used to handle registration -->
 <?php
+
 // check and filter data coming from the user
 @$email = trim($_POST["email"]);
 @$password = trim($_POST["password"]);
@@ -41,17 +47,19 @@ if (!empty($email) && !empty($password) && !empty($username)) {
 
     if ($result) {
         // if insert success, go to personalize page
-        // append the user_id to url
         // write select query to find the user_id
+        // append the user_id to session
         $selectQuery = "SELECT User.user_id FROM User WHERE User.email = '$email' AND User.password = '$password'";
         $selectResult = mysqli_query($connection, $selectQuery);
         $array = mysqli_fetch_assoc($selectResult);
-        $url = "Location: private/home.php?user_id=" . urlencode($array['user_id']);
+
+        // set a session variable
+        $_SESSION["user_id"] = $array["user_id"];
 
         mysqli_free_result($selectResult);
         mysqli_free_result($result);
         mysqli_close($connection);
-        header($url);
+        header("Location: private/personalize.php");
     } else {
         // if insert failed, leave the message
         die("Database query failed. " . mysqli_error($connection));
@@ -62,6 +70,9 @@ if (!empty($email) && !empty($password) && !empty($username)) {
 
 } else {
     // if all input fields from register from are empty
+    // destroy the session
+    session_destroy();
+
     // redirect to the register page, and kill itself
     header("Location: index.php");
     die();
