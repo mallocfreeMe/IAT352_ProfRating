@@ -1,3 +1,16 @@
+<?php
+// after user log out
+session_start();
+
+// remove the user_id from the session
+if (isset($_SESSION['user_id'])) {
+    session_unset();
+}
+
+// destroy the session
+session_destroy();
+?>
+
 <html lang="en">
 
 <head>
@@ -121,9 +134,9 @@ $sqlForPreference = "CREATE TABLE IF NOT EXISTS Preference (
 
 $resultForUser = mysqli_query($connection, $sqlForUser);
 $resultForProfessor = mysqli_query($connection, $sqlForProfessor);
-$resultForPreference = mysqli_query($connection, $sqlForPreference );
+$resultForPreference = mysqli_query($connection, $sqlForPreference);
 
-if (!$resultForUser || !$resultForProfessor || !$resultForPreference ) {
+if (!$resultForUser || !$resultForProfessor || !$resultForPreference) {
     die("Database query failed.");
 }
 
@@ -164,10 +177,6 @@ mysqli_close($connection);
 
             <!-- search bar with its icon -->
             <div class="grid-col-1of3">
-
-                <a href="explore.php">
-                    <img src="assets/icons/professor.png" class="searchIcon">
-                </a>
 
                 <form id="test" autocomplete="off">
                     <input type="text" placeholder="Search Prof" size="50" id="searchBar"
@@ -296,11 +305,6 @@ mysqli_close($connection);
     <div class="grid-col-1of3"></div>
 
 </footer>
-
-<!-- Second Page -->
-<section class="secondPage" id="definition">
-    <div class="grid"></div>
-</section>
 
 
 </body>

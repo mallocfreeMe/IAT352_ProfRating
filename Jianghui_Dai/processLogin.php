@@ -45,7 +45,7 @@ if (!empty($email) || !empty($password)) {
 
         mysqli_free_result($result);
         mysqli_close($connection);
-        header("Location: private/home.php");
+        header("Location: explore.php");
     } else {
         // if selection failed, leave the message
         session_destroy();

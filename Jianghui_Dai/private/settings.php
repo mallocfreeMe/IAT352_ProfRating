@@ -12,20 +12,6 @@ if (!empty($_SESSION['user_id'])) {
     header("Location: ../index.php");
     die();
 }
-?>
-
-<html lang="en">
-
-<?php
-
-@$user_id = trim($_GET["user_id"]);
-
-// if user_id is empty meaning user enter here without log in
-// redirect user back to index.html
-if (empty($user_id)) {
-    header("Location: ../login.php");
-    die();
-}
 
 $dbhost = "localhost";
 $dbuser = "root";
@@ -42,21 +28,30 @@ if (mysqli_connect_errno()) {
     );
 }
 
-// query to select user_id from the User table
-$query = "SELECT User.username FROM User WHERE User.user_id ='$user_id'";
+// query to select user_id from the User table, add all user info to arrat
+$user_id = $_SESSION['user_id'];
+$query = "SELECT * FROM User WHERE User.user_id ='$user_id'";
 
 $result = mysqli_query($connection, $query);
 
-$array = mysqli_fetch_assoc($result);
+if (!$result) {
+    // if selection failed, leave the message
+    mysqli_close($connection);
+    header("Location: login.php");
+    die("Database query failed. " . mysqli_error($connection));
+}
 
+$array = mysqli_fetch_assoc($result);
 $username = $array['username'];
 
 // free the returned data
 mysqli_free_result($result);
 
-// Close database connection
+// close the connection
 mysqli_close($connection);
 ?>
+
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -75,21 +70,17 @@ mysqli_close($connection);
 
         <!-- search bar with its icon -->
         <div class="grid-col-1of3">
-            <img src="../assets/icons/professor.png" class="searchIcon">
             <input type="text" placeholder="Search Prof" size="50" id="searchBar">
         </div>
 
         <div class="grid-col-1of3"></div>
 
         <div class="grid-col-1of3">
-            <ul>
+            <ul style="color: white">
                 <li><a href="../index.php">Log Out</a></li>
-                <?php
-                // encode user_id to url
-                $url = "home.php?user_id=" . $user_id;
-                echo "<li><a href=\"" . $url . "\">Home</a></li>";
-                echo "<li><a href=>welcome back, " . $username . "</a></li>";
-                ?>
+                <li><a href="personalize.php"">Personalization</a></li>
+                <li><a href="../explore.php"">Home</a></li>
+                <?php echo "<li><a href=>welcome back, " . $username . "</a></li>"; ?>
             </ul>
         </div>
 
@@ -99,7 +90,24 @@ mysqli_close($connection);
 <div class="grid">
     <div class="grid-col-1of3"></div>
 
-    <div class="grid-col-1of3">
+    <div class="grid-col-1of3" id="content">
+        <h2>User Info</h2>
+        <?php
+        echo "<table>";
+        echo "<tr><td>name</td><td>email</td><td>password</td></tr>";
+        echo "<tr><td>" . $array['username'] . "</td>";
+        echo "<td>" . $array['email'] . "</td>";
+        echo "<td>" . $array['password'] . "</td></tr>";
+        echo "</table>";
+        ?>
+
+        <!-- Change your password-->
+        <h2>Change your password</h2>
+
+        <form action="settings.php" method="post">
+            New Password: <input type="text" name="newPassword">
+            <input type="submit" value="submit">
+        </form>
 
         <?php
         $dbhost = "localhost";
@@ -117,33 +125,26 @@ mysqli_close($connection);
             );
         }
 
-        // query to select user_id from the User table
-        $query = "SELECT * FROM User WHERE User.user_id ='$user_id'";
+        // update the password
+        @$newPassword = trim($_POST['newPassword']);
 
-        $result = mysqli_query($connection, $query);
+        if (!empty($newPassword)) {
+            $sql = "UPDATE user SET password = '$newPassword' WHERE user_id = '$user_id'";
 
-        if (!$result) {
-            // if selection failed, leave the message
+            $result = mysqli_query($connection, $sql);
+
+            if (!$result) {
+                // if query failed, leave the message
+                mysqli_close($connection);
+                die("Database query failed. " . mysqli_error($connection));
+            }
+
+            // if query failed, leave the message
             mysqli_close($connection);
-            header("Location: login.php");
-            die("Database query failed. " . mysqli_error($connection));
         }
 
-        $array = mysqli_fetch_assoc($result);
-
-        echo "<table>";
-        echo "<tr><td>name</td><td>email</td><td>password</td></tr>";
-        echo "<tr><td>" . $array['username'] . "</td>";
-        echo "<td>" . $array['email'] . "</td>";
-        echo "<td>" . $array['password'] . "</td></tr>";
-        echo "</table>";
-
-        // free the returned data
-        mysqli_free_result($result);
-
-        // Close database connection
-        mysqli_close($connection);
         ?>
+
     </div>
 
     <div class="grid-col-1of3"></div>

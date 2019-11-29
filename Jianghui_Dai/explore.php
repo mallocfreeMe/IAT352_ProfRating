@@ -1,3 +1,49 @@
+<?php
+session_start();
+$login = false;
+
+// check whether the session has the saved user_id or not
+// if user log in
+// get the user info
+if (!empty($_SESSION['user_id'])) {
+    $login = true;
+    // Create a database connection
+    $dbhost = "localhost";
+    $dbuser = "root";
+    $dbpass = "";
+    $dbname = "Jianghui_Dai";
+    $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+
+    // Test if connection succeeded
+    if (mysqli_connect_errno()) {
+        // if connection failed, skip the rest of PHP code, and print an error
+        die("Database connection failed: " .
+            mysqli_connect_error() .
+            " (" . mysqli_connect_errno() . ")"
+        );
+    }
+
+    // query to select user_id (from session) from the User table
+    $user_id = $_SESSION['user_id'];
+    $query = "SELECT User.username FROM User WHERE User.user_id ='$user_id'";
+    $result = mysqli_query($connection, $query);
+    $array = mysqli_fetch_assoc($result);
+    $username = $array['username'];
+    // free the returned data
+    mysqli_free_result($result);
+
+    // select personalization from the Preference table
+    $query = "SELECT * FROM Preference WHERE user_id ='$user_id'";
+    $result = mysqli_query($connection, $query);
+    $array = mysqli_fetch_assoc($result);
+
+    //close the connection
+    mysqli_close($connection);
+} else {
+    $login = false;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +66,6 @@
 
             <!-- search bar -->
             <div class="grid-col-1of3">
-                <img src="assets/icons/professor.png" class="searchIcon">
                 <input type="text" placeholder="Search Prof" size="50" id="searchBar">
             </div>
 
@@ -161,10 +206,20 @@
 
             <!-- login and sign up -->
             <div class="grid-col-1of3">
-                <!-- nav log in button-->
-                <button id="sideLoginButton" onclick="location.href='login.php'">Log in</button>
-                <!-- nav sign up button-->
-                <button id="sideSignUpButton" onclick="location.href='index.php'">Sign Up</button>
+                <?php
+                if ($login) {
+                    echo "<ul id='loginMenu'>";
+                    echo "<li><a href=\"index.php\">Log Out</a></li>";
+                    echo "<li><a href=\"private/personalize.php\">Personalization</a></li>";
+                    echo "<li><a href=\"private/settings.php\">Settings</a></li>";
+                    echo "<li><a href=>welcome back, " . $username . "</a></li>";
+                    echo "</ul>";
+                } else {
+                    echo "<button id=\"sideLoginButton\" onclick=\"location.href='login.php'\">Log in</button>
+                          <button id=\"sideSignUpButton\" onclick=\"location.href='index.php'\">Sign Up</button>";
+                }
+                ?>
+
             </div>
 
         </div>
@@ -227,7 +282,7 @@
         }
 
         // print the table
-        echo "<table>";
+        echo "<table id=\"example\"";
 
         // print the table head
         echo "<tr><td>ID</td><td>Name</td><td>Overall Quality</td><td>Total Ratings</td><td>Hot</td><td>Easiness</td><td>Department</td><td>College</td></tr>";

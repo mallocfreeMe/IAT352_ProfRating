@@ -34,12 +34,7 @@
         <div class="grid">
 
             <!-- search bar -->
-            <div class="grid-col-1of3">
-                <a href="explore.php">
-                    <img src="assets/icons/professor.png" class="searchIcon">
-                </a>
-                <input type="text" placeholder="Search Prof" size="50" id="searchBar">
-            </div>
+            <div class="grid-col-1of3"></div>
 
             <div class="grid-col-1of3"></div>
 

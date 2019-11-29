@@ -44,7 +44,7 @@ if (isset($school) && isset($department) && isset($hotness)) {
         // if insert success, go to home page
         mysqli_free_result($result);
         mysqli_close($connection);
-        header("Location:home.php");
+        header("Location:../explore.php");
     } else {
         // close the connection
         mysqli_close($connection);
@@ -63,8 +63,31 @@ if (isset($school) && isset($department) && isset($hotness)) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Personalize | ProfRating</title>
     <link rel="shortcut icon" type="image/png" href="../assets/icons/favicon.png"/>
-    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="../css/grid.css">
+    <link rel="stylesheet" href="../css/publicNavigationBar.css">
+    <link rel="stylesheet" href="../css/forPersonalize.css">
 </head>
+
+<nav>
+    <div class="grid">
+
+        <!-- search bar with its icon -->
+        <div class="grid-col-1of3">
+            <input type="text" placeholder="Search Prof" size="50" id="searchBar">
+        </div>
+
+        <div class="grid-col-1of3"></div>
+
+        <div class="grid-col-1of3">
+            <ul style="color: white">
+                <li><a href="../index.php">Log Out</a></li>
+                <li><a href="settings.php"">Settings</a></li>
+                <li><a href="../explore.php"">Home</a></li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
 
 <body>
 
@@ -75,7 +98,7 @@ if (isset($school) && isset($department) && isset($hotness)) {
 
         <!-- personalize form-->
         <form method="post" action="personalize.php">
-            <h1>what college are you in?</h1>
+            <h2>what college are you in?</h2>
             <!-- school -->
             <select name="school">
                 <option value="" disabled selected>Select The College</option>
@@ -106,7 +129,7 @@ if (isset($school) && isset($department) && isset($hotness)) {
                 ?>
             </select>
 
-            <h1>which department are you in?</h1>
+            <h2>which department are you in?</h2>
             <!-- Department -->
             <select name="department">
                 <?php
@@ -129,12 +152,13 @@ if (isset($school) && isset($department) && isset($hotness)) {
                 mysqli_free_result($result);
                 ?>
             </select>
+            <br><br>
 
             <?php
-            echo " <input type=\"radio\" name=\"hotness\" value=\"Hot\"> Hot";
+            echo " <input type=\"radio\" name=\"hotness\" value=\"Hot\"> Hot       ";
             echo "<input type=\"radio\" name=\"hotness\" value=\"Not Hot\"> Not Hot";
             ?>
-
+            <br><br>
             <input type="submit" value="submit">
         </form>
     </div>

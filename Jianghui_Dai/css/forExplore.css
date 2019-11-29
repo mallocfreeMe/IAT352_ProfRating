@@ -75,3 +75,27 @@ tr:nth-child(1) {
     background-color: #5f74d2;
     color: white;
 }
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+nav li {
+    float: right;
+}
+
+nav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding-top: 2em;
+    padding-right: 1em;
+    text-decoration: none;
+}
+
+nav li a:visited {
+    color: white;
+}

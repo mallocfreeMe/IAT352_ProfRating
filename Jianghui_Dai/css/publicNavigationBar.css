@@ -12,11 +12,6 @@ nav {
     z-index: 1;
 }
 
-.searchIcon {
-    width: 3em;
-    transform: translate(-20%, 35%);
-}
-
 #searchBar {
     border-radius: 0.15em;
     /*transform: translate(0%, -200%);*/
@@ -32,6 +27,9 @@ nav {
     width: 16em;
     user-input: 10em;
     border-style: none;
+    margin-top: 1.5em;
+    float: left;
+    margin-left: 3em;
 }
 
 #searchBar::placeholder {
