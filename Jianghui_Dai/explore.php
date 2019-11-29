@@ -94,8 +94,19 @@ if (!empty($_SESSION['user_id'])) {
                             echo "<input type=\"radio\" name=\"hotness\" value=\"Not Hot\" checked=\"checked\"> Not Hot";
                         }
                     } else {
-                        echo " <input type=\"radio\" name=\"hotness\" value=\"Hot\"> Hot";
-                        echo "<input type=\"radio\" name=\"hotness\" value=\"Not Hot\"> Not Hot";
+                        // if login is true, echo the saved preferences
+                        if ($login) {
+                            if ($array['Hot'] == "Hot" && !empty($array['Hot'])) {
+                                echo "<input type=\"radio\" name=\"hotness\" value=\"Hot\" checked=\"checked\"> Hot";
+                                echo "<input type=\"radio\" name=\"hotness\" value=\"Not Hot\"> Not Hot";
+                            } else {
+                                echo " <input type=\"radio\" name=\"hotness\" value=\"Hot\"> Hot";
+                                echo "<input type=\"radio\" name=\"hotness\" value=\"Not Hot\" checked=\"checked\"> Not Hot";
+                            }
+                        } else {
+                            echo " <input type=\"radio\" name=\"hotness\" value=\"Hot\"> Hot";
+                            echo "<input type=\"radio\" name=\"hotness\" value=\"Not Hot\"> Not Hot";
+                        }
                     }
                     ?>
 
@@ -132,6 +143,12 @@ if (!empty($_SESSION['user_id'])) {
 
                         // print all the department from the array
                         @$department = $_GET["department"];
+
+                        if(!empty($array['Department'])) {
+                            echo "<option value=\"" . htmlspecialchars($array['Department']) . "\"" . "selected" . ">" .
+                                htmlspecialchars($array['Department']) .
+                                "</option>";
+                        }
 
                         if (mysqli_num_rows($result) > 0) {
                             // output data of each row
@@ -173,6 +190,12 @@ if (!empty($_SESSION['user_id'])) {
 
                         // get the return data
                         $result = mysqli_query($connection, $query);
+
+                        if(!empty($array['College'])) {
+                            echo "<option value=\"" . htmlspecialchars($$array['School']) . "\"" . "selected" . ">" .
+                                htmlspecialchars($array['College']) .
+                                "</option>";
+                        }
 
                         // fetch the data
                         if (mysqli_num_rows($result) > 0) {

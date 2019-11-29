@@ -35,21 +35,61 @@ if (mysqli_connect_errno()) {
 
 // if the form was submitted
 // insert data to Preference table
-if (isset($school) && isset($department) && isset($hotness)) {
-    $user_id = $_SESSION['user_id'];
-    $sql = "INSERT INTO Preference (user_id, College, Department, Hot) VALUES ('$user_id', '$school', '$department', '$hotness')";
-    $result = mysqli_query($connection, $sql);
+$user_id = $_SESSION['user_id'];
 
-    if ($result) {
-        // if insert success, go to home page
-        mysqli_free_result($result);
-        mysqli_close($connection);
-        header("Location:../explore.php");
+// select the query to show the previous saved info
+$query = "SELECT * FROM Preference WHERE user_id ='$user_id'";
+$result = mysqli_query($connection, $query);
+
+// check select query return any rows
+if (mysqli_num_rows($result) != 0) {
+    $array = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+}
+
+if (isset($school) && isset($department) && isset($hotness)) {
+    // check if the user preference was inserted already
+    $selectQuery = "SELECT * FROM Preference WHERE user_id = '$user_id'";
+    $resultForSelect = mysqli_query($connection, $selectQuery);
+
+    // check select query return any rows, if there are no rows selected meaning there is no data
+    // so insert the data
+    // otherwise, update the data
+    if (mysqli_num_rows($resultForSelect) == 0) {
+        $sql = "INSERT INTO Preference (user_id, College, Department, Hot) VALUES ('$user_id', '$school', '$department', '$hotness')";
+        $result = mysqli_query($connection, $sql);
+
+        if ($result) {
+            // if insert success, go to home page
+            mysqli_free_result($result);
+            mysqli_close($connection);
+            header("Location:../explore.php");
+        } else {
+            // close the connection
+            mysqli_close($connection);
+            // if insert failed, leave the message
+            die("Database query failed. " . mysqli_error($connection));
+        }
     } else {
-        // close the connection
-        mysqli_close($connection);
-        // if insert failed, leave the message
-        die("Database query failed. " . mysqli_error($connection));
+        // free returned result
+        mysqli_free_result($resultForSelect);
+
+        // write update query yo update user preference
+        $sql = "UPDATE Preference SET College='$school', Department='$department', Hot='$hotness' WHERE user_id='$user_id'";
+
+        // perform query
+        $result = mysqli_query($connection, $sql);
+
+        if ($result) {
+            // if update success, go to home page
+            mysqli_close($connection);
+            header("Location:../explore.php");
+        } else {
+            // close the connection
+            mysqli_close($connection);
+            // if update failed, leave the message
+            die("Database query failed. " . mysqli_error($connection));
+        }
     }
 }
 
@@ -113,6 +153,12 @@ if (isset($school) && isset($department) && isset($hotness)) {
                 // get the return data
                 $result = mysqli_query($connection, $query);
 
+                if (!empty($array['College'])) {
+                    echo "<option value=\"" . htmlspecialchars($$array['School']) . "\"" . "selected" . ">" .
+                        htmlspecialchars($array['College']) .
+                        "</option>";
+                }
+
                 // fetch the data
                 if (mysqli_num_rows($result) > 0) {
                     // output data of each row
@@ -132,12 +178,19 @@ if (isset($school) && isset($department) && isset($hotness)) {
             <h2>which department are you in?</h2>
             <!-- Department -->
             <select name="department">
+                <option value="" disabled selected>Select The Department</option>
                 <?php
                 // write distinct select query
                 $query = "SELECT DISTINCT Department FROM Professor ORDER BY Department ASC";
 
                 // get the return data
                 $result = mysqli_query($connection, $query);
+
+                if (!empty($array['Department'])) {
+                    echo "<option value=\"" . htmlspecialchars($array['Department']) . "\"" . "selected" . ">" .
+                        htmlspecialchars($array['Department']) .
+                        "</option>";
+                }
 
                 if (mysqli_num_rows($result) > 0) {
                     // output data of each row
@@ -155,8 +208,18 @@ if (isset($school) && isset($department) && isset($hotness)) {
             <br><br>
 
             <?php
-            echo " <input type=\"radio\" name=\"hotness\" value=\"Hot\"> Hot       ";
-            echo "<input type=\"radio\" name=\"hotness\" value=\"Not Hot\"> Not Hot";
+            if (!empty($array['Hot'])) {
+                if ($array['Hot'] == "Hot" && !empty($array['Hot'])) {
+                    echo "<input type=\"radio\" name=\"hotness\" value=\"Hot\" checked=\"checked\"> Hot";
+                    echo "<input type=\"radio\" name=\"hotness\" value=\"Not Hot\"> Not Hot";
+                } else {
+                    echo " <input type=\"radio\" name=\"hotness\" value=\"Hot\"> Hot";
+                    echo "<input type=\"radio\" name=\"hotness\" value=\"Not Hot\" checked=\"checked\"> Not Hot";
+                }
+            } else {
+                echo " <input type=\"radio\" name=\"hotness\" value=\"Hot\"> Hot       ";
+                echo "<input type=\"radio\" name=\"hotness\" value=\"Not Hot\"> Not Hot";
+            }
             ?>
             <br><br>
             <input type="submit" value="submit">
